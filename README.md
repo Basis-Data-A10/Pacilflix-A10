@@ -1,7 +1,7 @@
 # 🍿PACILFLIX
 
 ### 📝 Kelas dan Kelompok:
-* Basis Data A - 8
+* Basis Data A - 10
 
 ### 👤 Developer Team:
 * Muhammad Yusuf Haikal (2206081490)
