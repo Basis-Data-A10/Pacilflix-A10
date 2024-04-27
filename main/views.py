@@ -1,4 +1,9 @@
 from django.shortcuts import render
 
 def show_main(request):
-    return render(request, "main.html")
+    context = {
+        'name': 'A10',
+        'class': 'BASIS DATA A', 
+    }
+
+    return render(request, "main.html", context)
