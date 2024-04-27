@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %} 
+
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,26 +8,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <style>
         body {
-            font-family: fantasy;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            position: relative; /* Menjadikan posisi relatif untuk elemen absolute */
+            min-height: 100vh;
+            background: #0C0C0C;
+            color: #8f8f8f;
+            background-image: linear-gradient(#9B3922, #F2613F);
         }
+        
         .content {
             text-align: center;
-            margin-top: -50px; /* Menurunkan konten ke bawah */
+            margin-top: -50px;
+            color: black;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
         }
         .title {
             font-size: 36px;
-            color: red;
+            color: #0C0C0C;
             margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
         }
         .separator {
             border-top: 2px solid black;
@@ -34,22 +48,27 @@
         }
         .subtitle {
             font-size: 24px;
-            color: blue;
+            color: #0C0C0C;
             margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
         }
         .button {
             display: inline-block;
             padding: 10px 20px;
             margin: 10px;
-            background-color: transparent;
-            color: black;
+            background-color: black;
+            color: white;
             text-decoration: none;
             border: 2px solid black;
             border-radius: 5px;
             transition: background-color 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 600;
         }
         .button:hover {
             background-color: #ddd;
+            color: black;
         }
         .logo-container {
             position: absolute;
@@ -60,25 +79,13 @@
         }
         .logo-item {
             margin-right: 5px;
-            width: 25px; /* Lebar gambar huruf */
-            height: auto; /* Tinggi gambar huruf menyesuaikan lebar */
+            width: 25px;
+            height: auto;
         }
     </style>
 </head>
 <body>
-    <div class="logo-container">
-        <img src="https://www.iconfinder.com/icons/1553082/download/png/512" alt="P" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553029/download/png/512" alt="A" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553060/download/png/512" alt="C" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553089/download/png/512" alt="I" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553047/download/png/512" alt="L" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553032/download/png/512" alt="F" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553047/download/png/512" alt="L" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553089/download/png/512" alt="I" class="logo-item">
-        <img src="https://www.iconfinder.com/icons/1553096/download/png/512" alt="X" class="logo-item">
-    </div>
     <div class="content">
-        <img src="https://cdn3.iconfinder.com/data/icons/letters-and-numbers-1/32/letter_P_red-1024.png" alt="Pacilflix Logo" width="150">
         <div class="title">Pacilflix</div>
         <div class="separator"></div>
         <div class="subtitle">A10</div>
@@ -89,27 +96,9 @@
             <a href="{% url 'authentication:register' %}">
                 <button class="button">Register</button>
             </a>
-            <!-- <button class="button" id="login-button">Login</button>
-            <button class="button" id="register-button">Register</button> -->
-            <!-- <a href="login_page.html" class="button" id="login-button">Login</a> -->
-            <!-- <a href="register_page.html" class="button">Register</a> -->
         </div>
     </div>
 </body>
-
-<!-- <script>
-    const loginButton = document.getElementById('login-button');
-    
-    loginButton.addEventListener('click', function() {
-    window.location.href = 'login/';
-    });
-
-    const registerButton = document.getElementById('register-button');
-    
-    registerButton.addEventListener('click', function() {
-    window.location.href = 'register/';
-    });
-</script> -->
 </html>
 
 {% endblock content %}
