@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        body {
+            font-family: fantasy;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Menjadikan posisi relatif untuk elemen absolute */
+        }
+        .content {
+            text-align: center;
+            margin-top: -50px; /* Menurunkan konten ke bawah */
+        }
+        .title {
+            font-size: 36px;
+            color: red;
+            margin-bottom: 10px;
+        }
+        .separator {
+            border-top: 2px solid black;
+            margin: 10px auto;
+            width: 50px;
+        }
+        .subtitle {
+            font-size: 24px;
+            color: blue;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: transparent;
+            color: black;
+            text-decoration: none;
+            border: 2px solid black;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #ddd;
+        }
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .logo-item {
+            margin-right: 5px;
+            width: 25px; /* Lebar gambar huruf */
+            height: auto; /* Tinggi gambar huruf menyesuaikan lebar */
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="https://www.iconfinder.com/icons/1553082/download/png/512" alt="P" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553029/download/png/512" alt="A" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553060/download/png/512" alt="C" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553089/download/png/512" alt="I" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553047/download/png/512" alt="L" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553032/download/png/512" alt="F" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553047/download/png/512" alt="L" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553089/download/png/512" alt="I" class="logo-item">
+        <img src="https://www.iconfinder.com/icons/1553096/download/png/512" alt="X" class="logo-item">
+    </div>
+    <div class="content">
+        <img src="https://cdn3.iconfinder.com/data/icons/letters-and-numbers-1/32/letter_P_red-1024.png" alt="Pacilflix Logo" width="150">
+        <div class="title">Pacilflix</div>
+        <div class="separator"></div>
+        <div class="subtitle">A10</div>
+        <div>
+            <a href="loginpage.html" class="button">Login</a>
+            <a href="registerpage.html" class="button">Register</a>
+        </div>
+    </div>
+</body>
+</html>
