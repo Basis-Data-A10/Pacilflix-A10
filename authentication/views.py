@@ -24,49 +24,22 @@ def show_landing(request):
 
     return render(request, "landing_page.html", context)
 
-# def register(request):
-#     form = UserCreationForm()
-
-#     if request.method == "POST":
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Your account has been successfully created!')
-#             return redirect('login')
-#     context = {'form':form}
-#     return render(request, 'register_page.html', context)
-
-# def login_user(request):
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(request, username=username, password=password)
-
-#         if user is not None:
-#             login(request, user)
-#             return redirect('landing')
-        
-#         else:
-#             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
-#     context = {}
-#     return render(request, 'login_page.html', context)
-
-# def logout_user(request):
-#     logout(request)
-#     return redirect('login')
-
+@csrf_exempt
 def register(request):
     form = UserCreationForm()
 
     if request.method == "POST":
         form = UserCreationForm(request.POST)
-        if form.is_valid():
+        if User.objects.filter(username=request.POST.get('username')).exists():
+            messages.error(request, 'Username already exists. Please try again.')
+        elif form.is_valid():
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('authentication:show_landing')
     context = {'form':form}
     return render(request, 'register_page.html', context)
 
+@csrf_exempt
 def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
