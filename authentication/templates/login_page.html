@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: fantasy;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .content {
+            text-align: center;
+        }
+        .title {
+            font-size: 36px;
+            color: red;
+            margin-bottom: 10px;
+        }
+        .separator {
+            border-top: 2px solid black;
+            margin: 10px auto;
+            width: 50px;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+        .form-input {
+            margin: 10px;
+            padding: 10px;
+            width: 300px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: red; /* Warna border saat input aktif */
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: black; /* Warna latar belakang tombol */
+            color: white; /* Warna teks tombol */
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #cc0000; /* Warna latar belakang tombol saat dihover */
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <img src="https://cdn3.iconfinder.com/data/icons/letters-and-numbers-1/32/letter_P_red-1024.png" alt="Pacilflix Logo" width="150">
+        <div class="title">Login <span style="color:blue">Form</span></div>
+        <div class="separator"></div>
+        <div class="form-container">
+            <form action="#" method="POST">
+                <input type="text" name="username" placeholder="Username" class="form-input" maxlength="50"><br>
+                <input type="password" name="password" placeholder="Password" class="form-input" maxlength="50"><br>
+                <button type="submit" class="button">Masuk</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
