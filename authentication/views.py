@@ -58,3 +58,9 @@ def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('authentication:show_landing'))
     return response
+
+def show_unduhan(request):
+    return render(request, 'daftar_unduhan.html')
+
+def show_favorite(request):
+    return render(request, 'daftar_favorit.html')
