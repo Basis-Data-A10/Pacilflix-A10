@@ -2,6 +2,7 @@ CREATE TABLE PENGGUNA(
     username VARCHAR(50) PRIMARY KEY,
     password VARCHAR(50) NOT NULL,
     id_tayangan UUID,
+    negara_asal VARCHAR(50) NOT NULL, -- Add negara_asal
     FOREIGN KEY (id_tayangan) REFERENCES TAYANGAN(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -14,7 +15,7 @@ CREATE TABLE PAKET(
 CREATE TABLE DUKUNGAN_PERANGKAT(
     nama_paket VARCHAR(50),
     dukungan_perangkat VARCHAR(50),
-    PRIMARY KEY (nama_paket, dukungan_perangkat),
+    PRIMARY KEY (nama_paket, dukungan_perangkat), 
     FOREIGN KEY (nama_paket) REFERENCES PAKET(nama) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -61,23 +62,23 @@ CREATE TABLE TAYANGAN(
     url_video_trailer VARCHAR(255) NOT NULL,
     release_date_trailer DATE NOT NULL,
     id_sutradara UUID,
-    FOREIGN KEY (id_sutradara) REFERENCES CONTRIBUTORS(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (id_sutradara) REFERENCES SUTRADARA(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE MEMAINKAN_TAYANGAN(
     id_tayangan UUID,
     id_pemain UUID,
     PRIMARY KEY (id_tayangan, id_pemain),
-    FOREIGN KEY (id_tayangan) REFERENCES TAYANGAN(id),
-    FOREIGN KEY (id_pemain) REFERENCES CONTRIBUTORS(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (id_tayangan) REFERENCES TAYANGAN(id)  ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_pemain) REFERENCES PEMAIN(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE MENULIS_SKENARIO_TAYANGAN(
     id_tayangan UUID,
-    id_pemain UUID,
-    PRIMARY KEY (id_tayangan, id_pemain),
+    id_penulis_skenario UUID,
+    PRIMARY KEY (id_tayangan, id_penulis_skenario),
     FOREIGN KEY (id_tayangan) REFERENCES TAYANGAN(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_pemain) REFERENCES CONTRIBUTORS(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (id_penulis_skenario) REFERENCES PENULIS_SKENARIO(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE GENRE_TAYANGAN(
@@ -105,11 +106,11 @@ CREATE TABLE PERSETUJUAN(
 
 CREATE TABLE SERIES(
     id_tayangan UUID PRIMARY KEY,
-    FOREIGN KEY(id_tayangan) REFERENCES TAYANGAN(id)
+    FOREIGN KEY (id_tayangan) REFERENCES TAYANGAN(id)
 );
 
 CREATE TABLE FILM(
-    id_tayangan UUID,
+    id_tayangan UUID PRIMARY KEY,
     url_video_film VARCHAR(255) NOT NULL,
     release_date_film DATE NOT NULL,
     durasi_film INT NOT NULL DEFAULT 0,
@@ -169,7 +170,7 @@ CREATE TABLE TAYANGAN_TERUNDUH(
     id_tayangan UUID,
     username VARCHAR(50), 
     timestamp TIMESTAMP,
-    PRIMARY KEY(id_tayangan, username, timestamp),
-    FOREIGN KEY(id_tayangan) REFERENCES TAYANGAN(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (id_tayangan, username, timestamp),
+    FOREIGN KEY (id_tayangan) REFERENCES TAYANGAN(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (username) REFERENCES PENGGUNA(username) ON UPDATE CASCADE ON DELETE CASCADE
 );
