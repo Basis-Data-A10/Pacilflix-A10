@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    html, body {
+        height: 100%; /* Mengatur tinggi html dan body */
+        margin: 0;
+        padding: 0;
+        width: 100%; /* Mengatur lebar html dan body */
+    }
+
+    body {
+        background: linear-gradient(to bottom,#bb301a, #ed7e59); /* Gradient diterapkan ke body */
+        display: flex;
+        flex-direction: column; /* Membantu mengatur flow isi secara vertikal */
+        font-family: 'Lato', sans-serif;
+    }
+
+    .container {
+        flex: 1; /* Membuat container mengisi ruang yang tersedia */
+        width: 80%;
+        margin: auto;
+        padding-top: 50px;
+    }
+
+    .table-custom {
+        border-collapse: collapse;
+        width: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .table-custom th, .table-custom td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .table-custom th {
+        background-color: #4CAF50;
+        color: white;
+        font-weight: 700;
+    }
+
+    .table-custom td {
+        font-weight: 400;
+    }
+
+    .search-bar {
+        margin: 20px 0;
+    }
+
+    .search-input {
+        width: 50%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+
+
+<div class="container">
+    <h2>Search Results</h2>
+    <table class="table table-hover table-custom">
+        <thead>
+            <tr>
+                <th scope="col">Judul</th>
+                <th scope="col">Sinopsis Trailer</th>
+                <th scope="col">URL Trailer</th>
+                <th scope="col">Tanggal Rilis Trailer</th>
+                <th scope="col">Tayangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Lovely Bones</td>
+                <td>Susie, a fourteen-year-old girl, is murdered by her neighbour Harvey. </td>
+                <td><a href="{{ movie.trailer_url }}">Watch Trailer</a></td>
+                <td>2010-04-10</td>
+                <td>50000000</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

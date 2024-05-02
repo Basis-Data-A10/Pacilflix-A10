@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+    body {
+        font-family: 'Lato', sans-serif;
+        background: linear-gradient(to bottom, #bb301a, #ed7e59);
+    }
+
+    .container {
+        width: 80%;
+        margin: auto;
+        padding-top: 20px;
+        color: #202021;
+        background-color: #f3c7b9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+    }
+
+    .section {
+        background-color: #fce9e4;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    h1, h2, h3 {
+        color: #1c1d1d;
+    }
+
+    p, li {
+        color: #2c2c2c;
+    }
+
+    .button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #54362d;
+        color: #fff7f5;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    ul {
+        padding: 0;
+        list-style-type: none;
+    }
+
+    li {
+        padding: 5px 0;
+    }
+
+    a {
+        color: #54362d;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container">
+    <h1>Judul: The Crown</h1>
+    <h2>Sub Judul: Episode 3 - "Winds of Change"</h2>
+    <div class="section">
+        <h3>Sinopsis Episode:</h3>
+        <p>The Queen struggles to adapt to a changing Britain as her ministers prepare for a new era of transparency and openness.</p>
+    </div>
+    <div class="section">
+        <p><strong>Durasi Episode:</strong> 58 minutes</p>
+        <p><strong>Tanggal Rilis Episode:</strong> 2020-11-15</p>
+        <p><strong>URL Episode:</strong> <a href="http://example.com/episode3">Watch Episode</a></p>
+        <!-- Tombol Tonton hanya ditampilkan jika episode sudah dirilis -->
+        {% if '2020-11-15' <= 'today'|date:"Y-m-d" %}
+            <button class="button">Tonton</button>
+        {% endif %}
+    </div>
+    <div class="section">
+        <h3>Episode Lainnya:</h3>
+        <ul>
+            <li><a href="http://example.com/episode1">Episode 1 - "The Beginning"</a></li>
+            <li><a href="http://example.com/episode2">Episode 2 - "The Coronation"</a></li>
+            <li><a href="http://example.com/episode4">Episode 4 - "A New Era"</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock content %}
