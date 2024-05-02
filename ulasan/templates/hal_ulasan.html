@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: linear-gradient(to bottom, #bb301a, #ed7e59);
+        font-family: 'Lato', sans-serif;
+    }
+
+    .card-header {
+        background-color: #54362d; /* Bootstrap danger color */
+    }
+    .card {
+        box-shadow: 4px 4px 8px rgba(0,0,0,0.1);
+        transition: all 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .btn-primary {
+        background-color: #54362d;
+        border: none;
+    }
+
+    .title-container {
+        text-align: center; 
+    }
+    .title {
+        background-color: #fff;
+        color: #54362d;
+        font-size: 24px;
+        font-weight: bold; /* Make the text bolder */
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+    
+</style>
+
+<div class="container mt-5">
+    <div class="title-container">
+        <div class="title">Latest Reviews</div>
+    </div>
+    <div class="input-group mb-4">
+        <input type="text" class="form-control" placeholder="Enter your review" aria-label="User's review">
+        <select class="form-select" id="inputGroupSelectRating">
+            <option selected>Choose rating...</option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="5">5 Stars</option>
+        </select>
+        <button class="btn btn-primary" type="button">Submit</button>
+    </div>
+
+    <div class="row">
+        <!-- Five dummy reviews -->
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white">User1</div>
+                <div class="card-body">
+                    <p class="card-text">Loved the recent episode, the cliffhanger was intense!</p>
+                    <p class="card-text"><small class="text-muted">Posted on 2023-10-01</small></p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Rating: 5 Stars</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white">User2</div>
+                <div class="card-body">
+                    <p class="card-text">The plot seems dragging but the cinematography is great.</p>
+                    <p class="card-text"><small class="text-muted">Posted on 2023-10-02</small></p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Rating: 3 Stars</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white">User3</div>
+                <div class="card-body">
+                    <p class="card-text">Average movie, expected more action scenes.</p>
+                    <p class="card-text"><small class="text-muted">Posted on 2023-10-03</small></p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Rating: 2 Stars</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white">User4</div>
+                <div class="card-body">
+                    <p class="card-text">Fantastic characters and storyline! Can't wait for the next season.</p>
+                    <p class="card-text"><small class="text-muted">Posted on 2023-10-04</small></p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Rating: 5 Stars</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header text-white">User5</div>
+                <div class="card-body">
+                    <p class="card-text">The book was better, but this adaptation has its moments.</p>
+                    <p class="card-text"><small class="text-muted">Posted on 2023-10-05</small></p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Rating: 4 Stars</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

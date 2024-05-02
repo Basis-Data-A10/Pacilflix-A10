@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Dashboard Trailer</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: linear-gradient(to bottom, #bb301a, #ed7e59);
+        font-family: 'Lato', sans-serif;
+    }
+
+    .content-container {
+        width: 80%; /* Adjusting the width of the content */
+        margin: auto; /* Centering content horizontally */
+        text-align: center; /* Align text centrally for titles and buttons */
+    }
+
+    .table-custom {
+        border-collapse: collapse;
+        width: 100%; /* The table uses the full width of the container */
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .table-custom th, .table-custom td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .table-custom th {
+        background-color: #54362d;
+        color: white;
+        font-weight: 700;
+    }
+
+    .table-custom td {
+        font-weight: 400;
+    }
+
+    .table-custom td.sinopsis {
+        max-width: 250px; /* Limiting the width of synopsis column */
+        word-wrap: break-word; /* Ensures text wraps within the column */
+    }
+
+    .button-custom {
+        background-color: #54362d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px 0; /* Ensuring top and bottom margins for buttons */
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .title {
+        background-color: #fff;
+        color: #54362d;
+        font-size: 24px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+
+    .search-bar {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .search-input {
+        width: 50%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #54362d;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="content-container">
+        <div class="title">Halaman Trailer</div>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search for movies or series..." />
+            <button class="search-button">Search</button>
+        </div>
+        <h2 class="mb-3">Top 10 Shows</h2>
+        <div>
+            <button class="button-custom">Opsi Top 10 Global (default)</button>
+            <button class="button-custom">Opsi Top 10 Negara Pengguna</button>
+        </div>
+        <table class="table table-hover table-custom">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Judul</th>
+                    <th scope="col">Sinopsis Trailer</th>
+                    <th scope="col">URL Trailer</th>
+                    <th scope="col">Tanggal Rilis</th>
+                    <th scope="col">Tayangan 7 Hari Terakhir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dummy data -->
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Challengers</td>
+                    <td class="sinopsis">HER GAME. HER RULES. Tennis player turned coach Tashi has taken her husband, Art, and transformed him into a world-famous Grand Slam champion...</td>
+                    <td><a href="#" class="btn btn-primary">Play</a></td>
+                    <td>2024-16-04</td>
+                    <td>20,500,000</td>
+                </tr>
+                <tr>
+                    <th scope="row">...</th>
+                    <td>...</td>
+                    <td class="sinopsis">...</td>
+                    <td><a href="#" class="btn btn-primary">Play</a></td>
+                    <td>...</td>
+                    <td>...</td>
+                </tr>
+                <tr>
+                    <th scope="row">10</th>
+                    <td>Anyone But You</td>
+                    <td class="sinopsis">Despite having an amazing first date, Bea and Ben's initial attraction quickly turns sour. When they unexpectedly find themselves at a destination wedding in Australia, the pair pretend to be the perfect couple to keep up appearances.</td>
+                    <td><a href="#" class="btn btn-primary">Play</a></td>
+                    <td>2022-12-23</td>
+                    <td>30,000,000</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <h2 class="mb-3">Films</h2>
+        <table class="table table-hover table-custom">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Judul</th>
+                    <th scope="col">Sinopsis Trailer</th>
+                    <th scope="col">URL Trailer</th>
+                    <th scope="col">Tanggal Rilis Trailer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dummy data for films -->
+                <tr>
+                    <td>The Idea of You</td>
+                    <td>A 40-year-old single mum begins an unexpected romance with a 24-year-old boy band singer.</td>
+                    <td><a href="#" class="btn btn-primary">Watch Trailer</a></td>
+                    <td>2024-03-16</td>
+                </tr>
+                <!-- Repeat rows as needed -->
+            </tbody>
+        </table>
+
+        <h2 class="mb-3">Series</h2>
+        <table class="table table-hover table-custom">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Judul</th>
+                    <th scope="col">Sinopsis Trailer</th>
+                    <th scope="col">URL Trailer</th>
+                    <th scope="col">Tanggal Rilis Trailer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lovely Runner</td>
+                    <td>Ryu Sun-Jae (Byeon Woo-Seok) is a top star who has been in the spotlight since his debut. His life seems perfect, but being in the entertainment industry has completely worn him out. Meanwhile, Lim Sol (Kim Hye-Yoon) loves Ryu Sun-Jae as an adoring fan. </td>
+                    <td><a href="#" class="btn btn-primary">Watch Trailer</a></td>
+                    <td>2024-04-08</td>
+                </tr>
+                <tr>
+                    <td>My Liberation Notes</td>
+                    <td>Three siblings, exhausted by the monotony of day-to-day adulthood, seek to find fulfillment and freedom from their humdrum lives.</td>
+                    <td><a href="#" class="btn btn-primary">Watch Trailer</a></td>
+                    <td>2022-05-29</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock content %}
