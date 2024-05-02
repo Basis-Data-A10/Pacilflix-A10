@@ -1,8 +1,16 @@
+-- Kelas : Basis Data A
+-- Nomor Kelompok : 10
+-- Anggota Kelompok : 1. Muhammad Yusuf Haikal (2206081490)
+-- 2. Arju Naja Muhammad (2206082045)
+-- 3. Novrizal Airsyahputra (2206081780)
+-- 4. Rana Koesumastuti (2206083496)
+
+
 CREATE TABLE PENGGUNA(
     username VARCHAR(50) PRIMARY KEY,
     password VARCHAR(50) NOT NULL,
     id_tayangan UUID,
-    negara_asal VARCHAR(50) NOT NULL, -- Add negara_asal
+    negara_asal VARCHAR(50) NOT NULL,
     FOREIGN KEY (id_tayangan) REFERENCES TAYANGAN(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
