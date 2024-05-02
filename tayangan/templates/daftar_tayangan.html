@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Netflix - 10 Tayangan Terbaik Minggu Ini
+{% endblock %}
+
+{% block content %}
+<style>
+    table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+</style>
+<div class="container-fluid p-0">
+    <div class="jumbotron jumbotron-fluid bg-dark text-white mb-0">
+        <div class="container">
+            <h1 class="display-4">10 Tayangan Terbaik Minggu Ini</h1>
+            <div class="btn-group" role="group" aria-label="Opsi Top 10">
+                <button type="button" class="btn btn-primary">Opsi Top 10 Global (Default)</button>
+                <button type="button" class="btn btn-primary">Opsi Top 10 Negara Pengguna</button>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Peringkat</th>
+                    <th scope="col">Judul</th>
+                    <th scope="col">Sinopsis Trailer</th>
+                    <th scope="col">URL Trailer</th>
+                    <th scope="col">Tanggal Rilis Trailer</th>
+                    <th scope="col">Total View 7 Hari Terakhir</th>
+                    <th scope="col">Tayangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dummy data -->
+                <tr>
+                    <td>1</td>
+                    <td>Judul Tayangan 1</td>
+                    <td>Sinopsis Trailer 1</td>
+                    <td>URL Trailer 1</td>
+                    <td>Tanggal Rilis Trailer 1</td>
+                    <td>Total View 7 Hari Terakhir 1</td>
+                    <td>Tayangan 1</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Judul Tayangan 2</td>
+                    <td>Sinopsis Trailer 2</td>
+                    <td>URL Trailer 2</td>
+                    <td>Tanggal Rilis Trailer 2</td>
+                    <td>Total View 7 Hari Terakhir 2</td>
+                    <td>Tayangan 2</td>
+                </tr>
+                <!-- Lanjutkan dummy data sesuai kebutuhan -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
