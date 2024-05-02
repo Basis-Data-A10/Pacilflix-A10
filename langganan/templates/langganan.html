@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Langganan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Dashboard Langganan</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -72,8 +73,6 @@
             color: black;
         }
     </style>
-</head>
-<body>
     <div class="content">
         <h1 class="page-title">Halaman Langganan</h1>
         <div class="container">
@@ -153,5 +152,4 @@
             </table>
         </div>
     </div>
-</body>
-</html>
+{% endblock content%}
