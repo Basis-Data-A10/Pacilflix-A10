@@ -5,6 +5,7 @@
 {% endblock meta %}
 
 {% block content %}
+{% include 'navbar.html' %}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
@@ -41,7 +42,7 @@
     }
 
     .table-custom th {
-        background-color: #54362d;
+        background-color: rgba(0,0,0,0.1);
         color: white;
         font-weight: 700;
     }
@@ -56,7 +57,7 @@
     }
 
     .button-custom {
-        background-color: #54362d;
+        background-color: rgba(28, 15, 15, 0.569);
         color: white;
         border: none;
         padding: 10px 20px;
@@ -181,7 +182,9 @@
                     <td>A 40-year-old single mum begins an unexpected romance with a 24-year-old boy band singer.</td>
                     <td><a href="#" class="btn btn-primary">Watch Trailer</a></td>
                     <td>2024-03-16</td>
-                    <td>10,000,000</td>
+                    <td>    <svg class="fa" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="64" height="64">
+                        <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0 16 7.2-16 16zM416 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416zM160 128v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H192c-17.7 0-32 14.3-32 32zm32 160c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V320c0-17.7-14.3-32-32-32H192z"/>
+                    </svg></td>
                 </tr>
                 <!-- Repeat rows as needed -->
             </tbody>
@@ -204,14 +207,18 @@
                     <td>Ryu Sun-Jae (Byeon Woo-Seok) is a top star who has been in the spotlight since his debut. His life seems perfect, but being in the entertainment industry has completely worn him out. Meanwhile, Lim Sol (Kim Hye-Yoon) loves Ryu Sun-Jae as an adoring fan. </td>
                     <td><a href="#" class="btn btn-primary">Watch Trailer</a></td>
                     <td>2024-04-08</td>
-                    <td>5,000,000</td>
+                    <td>    <svg class="fa" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="64" height="64">
+                        <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0 16 7.2-16 16zM416 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416zM160 128v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H192c-17.7 0-32 14.3-32 32zm32 160c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V320c0-17.7-14.3-32-32-32H192z"/>
+                    </svg></td>
                 </tr>
                 <tr>
                     <td>My Liberation Notes</td>
                     <td>Three siblings, exhausted by the monotony of day-to-day adulthood, seek to find fulfillment and freedom from their humdrum lives.</td>
                     <td><a href="#" class="btn btn-primary">Watch Trailer</a></td>
                     <td>2022-05-29</td>
-                    <td>3,200,000</td>
+                    <td>    <svg class="fa" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="64" height="64">
+                        <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0 16 7.2-16 16zM416 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416zM160 128v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H192c-17.7 0-32 14.3-32 32zm32 160c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V320c0-17.7-14.3-32-32-32H192z"/>
+                    </svg></td>
                 </tr>
             </tbody>
         </table>
