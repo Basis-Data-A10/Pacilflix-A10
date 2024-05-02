@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'authentication',
     'tayangan',
     'trailer',
+    'ulasan',
 ]
 
 MIDDLEWARE = [
