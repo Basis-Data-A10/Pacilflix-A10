@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Kontributor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0C0C0C;
+            color: #8f8f8f;
+            background-image: linear-gradient(#9B3922, #F2613F);
+        }
+        
+        .content {
+            text-align: center;
+            margin-top: -50px;
+            color: black;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .title {
+            font-size: 36px;
+            color: #0C0C0C;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+        .separator {
+            border-top: 2px solid black;
+            margin: 10px auto;
+            width: 50px;
+        }
+        .subtitle {
+            font-size: 24px;
+            color: #0C0C0C;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+        .button:hover {
+            background-color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            margin-top: 20px;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+        }
+        thead {
+            background-color: #333;
+            color: white;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2%;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #eee;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="title">Daftar Kontributor</div>
+        <div class="separator"></div>
+        <div>
+            <label for="contributorType">Filter Kontributor:</label>
+            <select name="contributorType" id="contributorType">
+                <option value="all">Semua</option>
+                <option value="sutradara">Sutradara</option>
+                <option value="pemain">Pemain</option>
+                <option value="penulis">Penulis Skenario</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Tipe</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Kewarganegaraan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Asep Sudrajat</td>
+                    <td>Sutradara</td>
+                    <td>Laki-laki</td>
+                    <td>Indonesia</td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td>Pemain</td>
+                    <td>Perempuan</td>
+                    <td>Amerika Serikat</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>Penulis Skenario</td>
+                    <td>Laki-laki</td>
+                    <td>Inggris</td>
+                </tr>
+                <!-- Tambahkan baris data tambahan di sini jika diperlukan -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
