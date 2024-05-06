@@ -203,25 +203,15 @@
     <h2>Register Page</h2>
     <h5>by PacilFlix - A10</h5>
 
-    <div class="inputBox">
-      <span>Username</span>
-      <input type="text" required="required" name="username" class="form-control" maxlength="50">
-      <i></i>
-    </div>
-    <div class="inputBox">
-      <span>Password</span>
-      <input type="password" required="required" name="password"  class="form-control" maxlength="50">
-      <i></i>
-    </div>
-    <div class="inputBox">
-        <span>Negara Asal</span>
-        <input type="text" required="required" name="negara" class="form-control" maxlength="50">
-        <i></i>
-      </div>
-    <div class="links">
-        <input class="btn btn-primary w-100 py-2" type="submit" value="Daftar">
-    </div>
-    <div>
+    <div class="form-floating form-table">
+        <table class="form-table">  
+            {{ form.as_table }}  
+            <tr>  
+                <td>
+                </td>
+                <td><input style="color:white;" class="btn btn-primary w-100 py-2" type="submit" name="submit" value="Register "/></td>  
+            </tr>  
+        </table>  
     </div>
   </form>
   {% if messages %}  

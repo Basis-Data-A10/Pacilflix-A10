@@ -12,6 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout as auth_logout
 from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from authentication.forms import AuthForm
+
 
 
 #@login_required(login_url='/login')
@@ -26,7 +28,7 @@ def show_landing(request):
 
 @csrf_exempt
 def register(request):
-    form = UserCreationForm()
+    form = AuthForm(request.POST or None)
 
     if request.method == "POST":
         form = UserCreationForm(request.POST)
