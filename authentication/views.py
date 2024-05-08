@@ -31,7 +31,7 @@ def register(request):
     form = AuthForm(request.POST or None)
 
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = AuthForm(request.POST)
         if User.objects.filter(username=request.POST.get('username')).exists():
             messages.error(request, 'Username already exists. Please try again.')
         elif form.is_valid():
