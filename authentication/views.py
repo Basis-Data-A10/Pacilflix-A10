@@ -28,6 +28,7 @@ def register(request):
     return render(request, 'register_page.html', context)
 
 def login(request):
+    context = {"error": ""}
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
