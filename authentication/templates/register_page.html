@@ -2,7 +2,7 @@
 {% load static %} 
 
 {% block meta %}
-<title>Login</title>
+<title>Register</title>
 <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <style>
 * {
@@ -18,14 +18,14 @@
     align-items: center;
     min-height: 100vh;
     background: #0C0C0C;
-    color: #0C0C0C;
+    color: #8f8f8f;
     background-image: linear-gradient(#9B3922, #F2613F);
   }
 
   .box {
     position: relative;
-    width: 500px;
-    height: 500px;
+    width: 420px;
+    height: 450px;
     background: #0C0C0C;
     border-radius: 20px;
     overflow: hidden;
@@ -41,7 +41,7 @@
     position: absolute;
     inset: 4px;
     background: #ffffff;
-    padding: 10px 10px;
+    padding: 50px 40px;
     border-radius: 18px;
     z-index: 2;
     display: flex;
@@ -182,7 +182,7 @@
       font-size: 0.9em;
       border-radius: 7px;
       font-weight: 600;
-      width: 150%;
+      width: 100%;
       margin-top: 10px;
       transition: 0.6s;
       color:white;
@@ -191,8 +191,6 @@
   .box form button:hover {
     background-color: #0C0C0C;
   }
-
-
 </style>
 {% endblock meta %}
 
@@ -205,15 +203,28 @@
     <h2>Register Page</h2>
     <h5>by PacilFlix - A10</h5>
 
-    <div class="form-floating form-table">
-        <table class="form-table">  
-            {{ form.as_table }}  
-            <tr>  
-                <td>
-                </td>
-                <td><input style="color:white;" class="btn btn-primary w-100 py-2" type="submit" name="submit" value="Register "/></td>  
-            </tr>  
-        </table>  
+    <div class="inputBox">
+      <span>Username</span>
+      <input type="text" required="required" name="username" class="form-control" maxlength="50">
+      {% if is_email_exist %}
+      <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label>
+      {% endif %}
+      <i></i>
+    </div>
+    <div class="inputBox">
+      <span>Password</span>
+      <input type="password" required="required" name="password"  class="form-control" maxlength="50">
+      <i></i>
+    </div>
+    <div class="inputBox">
+        <span>Negara Asal</span>
+        <input type="text" required="required" name="negara" class="form-control" maxlength="50">
+        <i></i>
+      </div>
+    <div class="links">
+        <input class="btn btn-primary w-100 py-2" type="submit" value="Daftar">
+    </div>
+    <div>
     </div>
   </form>
   {% if messages %}  
