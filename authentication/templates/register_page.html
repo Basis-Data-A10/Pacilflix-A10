@@ -206,7 +206,7 @@
     <div class="inputBox">
       <span>Username</span>
       <input type="text" required="required" name="username" class="form-control" maxlength="50">
-      {% if is_email_exist %}
+      {% if username_exists %}
       <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label>
       {% endif %}
       <i></i>
@@ -218,7 +218,7 @@
     </div>
     <div class="inputBox">
         <span>Negara Asal</span>
-        <input type="text" required="required" name="negara" class="form-control" maxlength="50">
+        <input type="text" required="required" name="negara_asal" class="form-control" maxlength="50">
         <i></i>
       </div>
     <div class="links">
