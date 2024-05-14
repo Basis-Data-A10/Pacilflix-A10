@@ -202,12 +202,12 @@
     {% csrf_token %}  
     <h2>Register Page</h2>
     <h5>by PacilFlix - A10</h5>
+    {% if username_exists %}
+    <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label>
+    {% endif %}
     <div class="inputBox">
       <span>Username</span>
       <input type="text" required="required" name="username" class="form-control" maxlength="50">
-      {% if username_exists %}
-      <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label>
-      {% endif %}
       <i></i>
     </div>
     <div class="inputBox">

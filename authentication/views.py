@@ -17,12 +17,12 @@ def register(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         negara_asal = request.POST.get("negara_asal")
-        try:
+        try:    
             execute_query(f"INSERT INTO PENGGUNA (username, password, negara_asal) VALUES ('{username}', '{password}', '{negara_asal}');")
             response = HttpResponseRedirect(reverse("authentication:show_landing"))
             return response
         except:
-            context = {"username_exists": True}
+            context = {"username_exists": True}     
         return render(request, 'register_page.html', context)
     context = {"username_exists": False}
     return render(request, 'register_page.html', context)
@@ -39,7 +39,6 @@ def login(request):
         else:
             response = HttpResponseRedirect(reverse("authentication:show_landing"))
             return response
-            
     return render(request, 'login_page.html', context)
 
 def logout(request):
