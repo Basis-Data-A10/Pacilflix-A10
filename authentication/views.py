@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from pacilflix_function.functions import *
+from utils.query import *
 
 def show_landing(request):
     return render(request, "landing_page.html")
@@ -18,7 +19,7 @@ def register(request):
         password = request.POST.get("password")
         negara_asal = request.POST.get("negara_asal")
         try:    
-            execute_query(f"INSERT INTO PENGGUNA (username, password, negara_asal) VALUES ('{username}', '{password}', '{negara_asal}');")
+            execute_query(f"INSERT INTO pengguna (username, password, negara_asal) VALUES ('{username}', '{password}', '{negara_asal}');")
             response = HttpResponseRedirect(reverse("authentication:show_landing"))
             return response
         except:
@@ -32,12 +33,17 @@ def login(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        result = execute_query(f"SELECT * FROM PENGGUNA WHERE username='{username}' AND password='{password}';")
+        result = execute_query(f"SELECT * FROM pengguna WHERE username='{username}' AND password='{password}';")
         print(result)
+
         if len(result) == 0:
             context = {"wrong_input": True}
         else:
+            username = result[0][0]
             response = HttpResponseRedirect(reverse("authentication:show_landing"))
+            response.set_cookie('username', username)
+            response.set_cookie('password', password)
+            response.set_cookie('authenticated', "True")
             return response
     return render(request, 'login_page.html', context)
 
