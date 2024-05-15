@@ -2,7 +2,7 @@
 {% load static %} 
 
 {% block meta %}
-<title>Login</title>
+<title>Register</title>
 <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <style>
 * {
@@ -202,7 +202,9 @@
     {% csrf_token %}  
     <h2>Register Page</h2>
     <h5>by PacilFlix - A10</h5>
-
+    {% if username_exists %}
+    <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label>
+    {% endif %}
     <div class="inputBox">
       <span>Username</span>
       <input type="text" required="required" name="username" class="form-control" maxlength="50">
@@ -215,7 +217,7 @@
     </div>
     <div class="inputBox">
         <span>Negara Asal</span>
-        <input type="text" required="required" name="negara" class="form-control" maxlength="50">
+        <input type="text" required="required" name="negara_asal" class="form-control" maxlength="50">
         <i></i>
       </div>
     <div class="links">
