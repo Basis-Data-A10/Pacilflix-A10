@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.shortcuts import redirect, render
+from django.contrib.auth import logout as auth_logout
 from pacilflix_function.functions import *
+from pacilflix_function.authentication import *
 from utils.query import *
 
 def show_landing(request):
@@ -18,35 +18,17 @@ def register(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         negara_asal = request.POST.get("negara_asal")
-        try:    
-            execute_query(f"INSERT INTO pengguna (username, password, negara_asal) VALUES ('{username}', '{password}', '{negara_asal}');")
-            response = HttpResponseRedirect(reverse("authentication:show_landing"))
-            return response
-        except:
-            context = {"username_exists": True}     
-        return render(request, 'register_page.html', context)
-    context = {"username_exists": False}
-    return render(request, 'register_page.html', context)
+        query_register(username, password, negara_asal, request)
+    return render(request, 'register_page.html')
 
 def login(request):
-    context = {"error": ""}
+    context = {}
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        result = execute_query(f"SELECT * FROM pengguna WHERE username='{username}' AND password='{password}';")
-        print(result)
-
-        if len(result) == 0:
-            context = {"wrong_input": True}
-        else:
-            username = result[0][0]
-            response = HttpResponseRedirect(reverse("authentication:show_landing"))
-            response.set_cookie('username', username)
-            response.set_cookie('password', password)
-            response.set_cookie('authenticated', "True")
-            return response
+        query_login(username, password, request)
     return render(request, 'login_page.html', context)
 
 def logout(request):
-    response = HttpResponseRedirect(reverse("authentication:show_landing"))
-    return response
+    auth_logout(request)
+    return redirect('authentication:show_landing')
