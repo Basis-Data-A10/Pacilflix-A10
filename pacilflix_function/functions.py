@@ -1,9 +1,25 @@
+from django.contrib import messages
 from django.db import connection
+from django.shortcuts import redirect
 
-def execute_query(query):
-  with connection.cursor() as cursor:
-    cursor.execute(query)
-    if query.lower().startswith('select'):
-      result = cursor.fetchall()
-      return result
-  connection.close()
+def query_register(username, password, negara_asal, request):
+  cursor = connection.cursor()
+  try:
+    cursor.execute("INSERT INTO PENGGUNA VALUES (%s, %s, %s)", [username, password, negara_asal])
+    messages.success(request, 'Register success!')
+  except:
+    messages.error(request, 'Register failed! Please use another username.')
+ 
+def query_login(username, password, request):
+  cursor = connection.cursor()
+  cursor.execute("SELECT username, password FROM PENGGUNA WHERE username = %s AND password = %s", [username, password])
+  user = cursor.fetchone()
+  print(user)
+  if user is not None:
+    request.session['username'] = username
+    response = redirect('tayangan:show_tayangan')
+    response.set_cookie('username', username)
+    return response
+  else:
+    print("Username atau password tidak ditemukan")
+  
