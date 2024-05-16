@@ -68,7 +68,8 @@ body {
 .box form .inputBox {
     position: relative;
     width: 320px;
-    margin-top: 35px;
+    margin-top: 10px;
+    margin-bottom:25px;
 }
 
 .box form .inputBox .form-control {
@@ -165,7 +166,7 @@ body {
     border-radius: 7px;
     font-weight: 600;
     width: 100%;
-    margin-top: 35px;
+    margin-top: 15px;
     transition: 0.6s;
 }
 
@@ -201,6 +202,11 @@ body {
     font-size: 0.8em;
 }
 
+.message {
+    color: red; /* Set the color to red */
+    font-size: 0.85em; /* Reduce the font size */
+    margin-top: 10px; /* Add some margin to separate from other elements */
+}
 </style>
 {% endblock meta %}
 
@@ -214,14 +220,17 @@ body {
     {% csrf_token %}  
     <h2>Register Page</h2>
     <h5>by PacilFlix - A10</h5>
+    {% if messages %}
+    {% for message in messages %}
+        <p class="message">{{ message }}</p>
+    {% endfor %}
+    {% endif %} 
     <div class="inputBox">
       <span>Username</span>
       <input type="text" required="required" name="username" class="form-control" maxlength="50">
       <i></i>
     </div>
-    
-    <!-- <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label> -->
-    
+        
     <div class="inputBox">
       <span>Password</span>
       <input type="password" required="required" name="password"  class="form-control" maxlength="50">
@@ -238,13 +247,7 @@ body {
     <div>
     </div>
   </form>
-  {% if messages %}
-  <ul class="messages">
-       {% for message in messages %}
-            <li>{{ message }}</li>
-       {% endfor %}
-  </ul>
-{% endif %}   
+ 
 </div>
 </body>
 
