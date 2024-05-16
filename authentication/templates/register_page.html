@@ -10,35 +10,37 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+}
 
-  body {
+body {
     margin: 0;
     display: flex;
-    justify-content: center;
+    justify-content: start;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
     background: #0C0C0C;
     color: #8f8f8f;
     background-image: linear-gradient(#9B3922, #F2613F);
-  }
+}
 
-  .box {
+.box {
     position: relative;
     width: 420px;
     height: 500px;
     background: #0C0C0C;
     border-radius: 20px;
     overflow: hidden;
-  }
+    margin-top: 50px;
+}
 
-  .borderLine {
+.borderLine {
     position: absolute;
     top: 0;
     inset: 0;
-  }
+}
 
-  .box form {
+.box form {
     position: absolute;
     inset: 4px;
     background: #ffffff;
@@ -47,36 +49,36 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-  }
+}
 
-  .box form h2 {
+.box form h2 {
     color: #0C0C0C;
     font-weight: 700;
     text-align: center;
     letter-spacing: 0.1em;
-  }
+}
 
-  .box form h5 {
+.box form h5 {
     color: #0C0C0C;
     font-weight: 700;
     text-align: center;
     letter-spacing: 0.1em;
-  }
+}
 
-  .box form .inputBox {
+.box form .inputBox {
     position: relative;
     width: 320px;
     margin-top: 35px;
-  }
+}
 
-  .box form .inputBox .form-control {
-      color:white;
-  }
+.box form .inputBox .form-control {
+    color: white;
+}
 
-  .box form .inputBox input {
+.box form .inputBox input {
     position: relative;
     width: 100%;
-    padding: 20px 10px 10px;
+    padding: 10px 10px 10px 0;
     background: transparent;
     outline: none;
     border: none;
@@ -86,72 +88,73 @@
     letter-spacing: 0.05em;
     transition: 0.5s;
     z-index: 10;
-  }
+}
 
-  .box form .inputBox span {
+.box form .inputBox span {
     position: absolute;
     left: 0;
-    padding: 20px 0px 10px;
+    padding: 10px 0 10px;
     pointer-events: none;
     color: #0C0C0C;
     font-size: 1em;
     letter-spacing: 0.05em;
     transition: 0.5s;
-  }
+}
 
-  .box form .inputBox input:valid ~ span,
-  .box form .inputBox input:focus ~ span {
-      color: white;
-      font-size: 0.75em;
-      transform: translateY(-34px);
-  }
+.box form .inputBox input:valid ~ span,
+.box form .inputBox input:focus ~ span {
+    color: white;
+    font-size: 0.75em;
+    transform: translateY(-28px);
+}
 
-  .box form .inputBox i {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 2px;
-      background: #27374D;
-      border-radius: 7px;
-      overflow: hidden;
-      transition: 0.5s;
-      pointer-events: none;
-  }
+.box form .inputBox i {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #27374D;
+    border-radius: 7px;
+    overflow: hidden;
+    transition: 0.5s;
+    pointer-events: none;
+}
 
-  .box form .inputBox input:valid ~ i,
-  .box form .inputBox input:focus ~ i {
-      height: 44px;
-  }
+.box form .inputBox input:valid ~ i,
+.box form .inputBox input:focus ~ i {
+    height: 44px;
+}
 
-  .box form .links {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-  }
+.box form .links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
 
-  .box form .wordle {
-      margin-top: 10px;
-      width: 100%;
-      text-align:center;
-  }
-  .box form .links input {
-      color:white;
-  }
+.box form .wordle {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
 
-  .box form .links a {
+.box form .links input {
+    color: white;
+}
+
+.box form .links a {
     margin: 15px 12px 20px 0;
     font-size: 0.75em;
     color: white;
     text-decoration: none;
-  }
+}
 
-  .box form .links a:hover,
-  .box form .links a:nth-child(2) {
+.box form .links a:hover,
+.box form .links a:nth-child(2) {
     color: white;
-  }
+}
 
-  .box form input[type="submit"] {
+.box form input[type="submit"] {
     position: center;
     border: none;
     outline: none;
@@ -164,43 +167,46 @@
     width: 100%;
     margin-top: 35px;
     transition: 0.6s;
-  }
+}
 
-  .box form input[type="submit"]:hover {
+.box form input[type="submit"]:hover {
     background-color: #0C0C0C;
-  }
+}
 
-  .box form input[type="submit"]:active {
+.box form input[type="submit"]:active {
     opacity: 0.8;
-  }
+}
 
-  .box form button {
-      border: none;
-      outline: none;
-      padding: 9px 25px;
-      background: #152040;
-      cursor: pointer;
-      font-size: 0.9em;
-      border-radius: 7px;
-      font-weight: 600;
-      width: 100%;
-      margin-top: 10px;
-      transition: 0.6s;
-      color:white;
-  }
+.box form button {
+    border: none;
+    outline: none;
+    padding: 9px 25px;
+    background: #152040;
+    cursor: pointer;
+    font-size: 0.9em;
+    border-radius: 7px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 10px;
+    transition: 0.6s;
+    color: white;
+}
 
-  .box form button:hover {
+.box form button:hover {
     background-color: #0C0C0C;
-  }
+}
 
-  .text-redbright {
-      color: #FF6347;
-      font-size: 0.8em;
-  }
+.text-redbright {
+    color: #FF6347;
+    font-size: 0.8em;
+}
+
 </style>
 {% endblock meta %}
 
 {% block content %}
+<body>
+  {% include 'navbar_guest.html' %}
 
 <div class="box">
   <span class="borderLine"></span>
@@ -214,7 +220,7 @@
       <i></i>
     </div>
     
-    <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label>
+    <!-- <br><label class="text-redbright text-sm italic">&nbsp;*Username already exists! Please use another username.</label> -->
     
     <div class="inputBox">
       <span>Password</span>
@@ -232,13 +238,14 @@
     <div>
     </div>
   </form>
-  <!-- {% if messages %}  
-    <ul>   
-        {% for message in messages %}  
-            <li>{{ message }}</li>  
-            {% endfor %}  
-    </ul>   
-  {% endif %} -->
+  {% if messages %}
+  <ul class="messages">
+       {% for message in messages %}
+            <li>{{ message }}</li>
+       {% endfor %}
+  </ul>
+{% endif %}   
 </div>
+</body>
 
 {% endblock content %}

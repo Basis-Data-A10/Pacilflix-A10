@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.db import connection
+from django.db import InternalError, connection
 from django.shortcuts import redirect
 
 def query_register(username, password, negara_asal, request):
@@ -7,7 +7,8 @@ def query_register(username, password, negara_asal, request):
   try:
     cursor.execute("INSERT INTO PENGGUNA VALUES (%s, %s, %s)", [username, password, negara_asal])
     messages.success(request, 'Register success!')
-  except:
+  except InternalError as e:
+    print(e)
     messages.error(request, 'Register failed! Please use another username.')
  
 def query_login(username, password, request):
@@ -16,7 +17,8 @@ def query_login(username, password, request):
   user = cursor.fetchone()
   if user is not None:
     request.session['username'] = username
-    response = redirect('authentication: show_landing')
+    print("Login berhasil")
+    response = redirect('authentication:show_landing')
     response.set_cookie('username', username)
     return response
   else:
