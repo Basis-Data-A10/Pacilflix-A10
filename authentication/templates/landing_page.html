@@ -18,7 +18,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: start;
             min-height: 100vh;
             background: #0C0C0C;
             color: #8f8f8f;
@@ -121,21 +121,23 @@
         }
     </style>
 </head>
+
 <body>
-    <div class="navbar">
-        {% include 'navbar_guest.html' %}
-    </div>
-    <div class="content">
-        <div class="title">Pacilflix</div>
-        <div class="separator"></div>
-        <div class="subtitle">A10</div>
-        <div>
-            <a href="{% url 'authentication:login' %}">
-                <button class="button">Login</button>
-            </a>
-            <a href="{% url 'authentication:register' %}">
-                <button class="button">Register</button>
-            </a>
+    {% include 'navbar_guest.html' %}
+    
+    <div style="position: relative;display: flex; align-items: center; justify-content: center; height: 100%;">
+        <div class="content">
+            <div class="title">Pacilflix</div>
+            <div class="separator"></div>
+            <div class="subtitle">A10</div>
+            <div>
+                <a href="{% url 'authentication:login' %}">
+                    <button class="button">Login</button>
+                </a>
+                <a href="{% url 'authentication:register' %}">
+                    <button class="button">Register</button>
+                </a>
+            </div>
         </div>
     </div>
 </body>
