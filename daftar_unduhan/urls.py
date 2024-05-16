@@ -1,6 +1,9 @@
 from django.urls import path
-from django.views.generic import TemplateView
+from .views import show_downloads, delete_download
+
+app_name = 'daftar_unduhan'
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='daftar_unduhan.html'), name='daftar_unduhan'),
+    path('', show_downloads, name='show_downloads'),
+    path('delete/<uuid:download_id>/', delete_download, name='delete_download')
 ]

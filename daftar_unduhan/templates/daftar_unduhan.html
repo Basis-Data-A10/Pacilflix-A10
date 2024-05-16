@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load static %} 
-
 {% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
+    
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -99,16 +100,18 @@
                 display: block;
                 width: 60px;
             }
-            nav{
-                height:72px;
-                width:100%;
-                background-color:white;
-                display:flex;
-                align-items:center;
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
             }
         </style>
     </head>
     <body>
+        <nav>
+            {% include 'navbar.html' %}
+        </nav>
         <div class="content">
             <div class="title">Daftar Unduhan</div>
             <div class="separator"></div>
@@ -121,36 +124,15 @@
                 </tr>
             </thead>
             <tbody>
+                {% for download in downloads %}
                 <tr>
-                    <td>Eternal Sunshine of the Spotless Mind</td>
-                    <td>2022-05-12 06:53:22</td>
+                    <td>{{ download.0 }}</td>
+                    <td>{{ download.1|date:"d-m-Y H:i:s" }}</td>
                     <td>
-                        <a href="#" class="button">Hapus</a>
+                        <a href="{% url 'daftar_unduhan:delete_download' download.2 %}" class="button">Hapus</a>
+                    </td>
                 </tr>
-                <tr>
-                    <td>Dune: Part Two</td>
-                    <td>2024-07-31 16:28:46</td>
-                    <td>
-                        <a href="#" class="button">Hapus</a>
-                </tr>
-                <tr>
-                    <td>Catch Me If You Can</td>
-                    <td>2021-03-09 23:44:13</td>
-                    <td>
-                        <a href="#" class="button">Hapus</a>
-                </tr>
-                <tr>
-                    <td>Manchester by the Sea</td>
-                    <td>2023-08-16 12:05:59</td>
-                    <td>
-                        <a href="#" class="button">Hapus</a>
-                </tr>
-                <tr>
-                    <td>Everything Everywhere All at Once</td>
-                    <td>2023-12-25 21:07:37</td>
-                    <td>
-                        <a href="#" class="button">Hapus</a>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
         </div>
