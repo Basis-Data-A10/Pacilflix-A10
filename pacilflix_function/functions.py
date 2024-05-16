@@ -14,10 +14,9 @@ def query_login(username, password, request):
   cursor = connection.cursor()
   cursor.execute("SELECT username, password FROM PENGGUNA WHERE username = %s AND password = %s", [username, password])
   user = cursor.fetchone()
-  print(user)
   if user is not None:
     request.session['username'] = username
-    response = redirect('tayangan:show_tayangan')
+    response = redirect('authentication: show_landing')
     response.set_cookie('username', username)
     return response
   else:
