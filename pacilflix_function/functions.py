@@ -13,9 +13,9 @@ def query_register(username, password, negara_asal, request):
     cursor.execute("INSERT INTO PENGGUNA VALUES (%s, %s, %s)", [username, password, negara_asal])
     # messages.success(request, f'Register success! Hello, {username}!')
     print(f'Register account {username} from {negara_asal} succeeded!')
-    response = HttpResponseRedirect(reverse("authentication:login"))    
-    return response
-    #return redirect('authentication:login')  
+    # response = HttpResponseRedirect(reverse("authentication:login"))    
+    # return response
+    return redirect('authentication:login')  
   except InternalError as e:
     print(e)
     messages.error(request, 'Register failed! Please use another username.')
@@ -26,10 +26,11 @@ def query_login(username, password, request):
   user = cursor.fetchone()
 
   if user is not None:
-    request.session['username'] = username
+    # request.session['username'] = username
     # messages.success(request, f'Login success! Welcome to PacilFlix, {username}!')
     print(f'Login to {username} succeeded!')
-    response = HttpResponseRedirect(reverse("authentication:login"))  # NANTI JADI TAYANGAN!!!
+    # response = HttpResponseRedirect(reverse("authentication:show_landing"))  # NANTI JADI TAYANGAN!!!
+    response = redirect('authentication:show_landing')
     response.set_cookie('username', username)
     response.set_cookie('password', password)
     response.set_cookie('authenticated', 'True')
