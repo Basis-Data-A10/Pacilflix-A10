@@ -84,9 +84,9 @@
     <h1 class="text-center mb-4">Tayangan</h1>
 
     <div class="input-group mb-3 search-bar">
-        <input type="text" class="form-control search-input" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
+        <input id="searchBar" type="text" class="form-control search-input" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <button class="btn search-button" type="button">Search</button>
+            <button id="search" class="btn search-button" type="button" onclick="searchFunction()">Search</button>
         </div>
     </div>
 
@@ -163,4 +163,13 @@
     </div>
 </div>
 </body>
+
+<script>
+    document.getElementById('search').addEventListener('click', function() {
+        const searchValue = document.getElementById('searchBar').value;
+        const encodedValue = encodeURIComponent(searchValue).replace(/'/g, "%27");
+        const searchUrl = `hasil-pencarian-tayangan/${encodedValue}/`;
+        window.location.href = searchUrl;
+    });
+</script>
 {% endblock content %}

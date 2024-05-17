@@ -66,30 +66,55 @@
     a:hover {
         text-decoration: underline;
     }
+
+
+    .btn-custom {
+        background-color: #54362d;
+        color: white;
+        border: none;
+        border-radius: 20px; /* membuat tombol ujungnya oval */
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold; /* teksnya menjadi tebal */
+        margin-bottom: 10px;
+    }
+
+    .btn-custom:hover {
+        background-color: #6c4a3c; /* ubah warna saat tombol dihover */
+    }
 </style>
 
 <div class="container">
-    <h1>Judul: The Crown</h1>
-    <h2>Sub Judul: Episode 3 - "Winds of Change"</h2>
+    <h1>Judul: {{ series_title }}</h1>
+    {% if episode %}
+    <h2>Sub Judul: {{ episode.sub_judul }}</h2>
     <div class="section">
         <h3>Sinopsis Episode:</h3>
-        <p>The Queen struggles to adapt to a changing Britain as her ministers prepare for a new era of transparency and openness.</p>
+        <p>{{ episode.sinopsis }}</p>
     </div>
     <div class="section">
-        <p><strong>Durasi Episode:</strong> 58 minutes</p>
-        <p><strong>Tanggal Rilis Episode:</strong> 2020-11-15</p>
-        <p><strong>URL Episode:</strong> <a href="http://example.com/episode3">Watch Episode</a></p>
+        <p><strong>Durasi Episode:</strong> {{ episode.durasi }}</p>
+        <p><strong>Tanggal Rilis Episode:</strong> {{ episode.release_date }}</p>
+        <p><strong>URL Episode:</strong> <a href="{{ episode.url_video }}">Watch Episode</a></p>
         <!-- Tombol Tonton hanya ditampilkan jika episode sudah dirilis -->
-        {% if '2020-11-15' <= 'today'|date:"Y-m-d" %}
-            <button class="button">Tonton</button>
+        {% if episode.release_date <= 'today'|date:"Y-m-d" %}
+        <button class="button">Tonton</button>
         {% endif %}
     </div>
+    {% else %}
+    <p>Episode tidak ditemukan.</p>
+    {% endif %}
+
     <div class="section">
         <h3>Episode Lainnya:</h3>
         <ul>
-            <li><a href="http://example.com/episode1">Episode 1 - "The Beginning"</a></li>
-            <li><a href="http://example.com/episode2">Episode 2 - "The Coronation"</a></li>
-            <li><a href="http://example.com/episode4">Episode 4 - "A New Era"</a></li>
+            {% for episode in episodes %}
+            <li>
+                <a href="{% url 'tayangan:episode' episode.1 episode.0 %}">
+                    <button class="btn-custom">Episode {{ episode.0|add:1 }}</button>
+                </a>
+            </li>
+            {% endfor %}
         </ul>
     </div>
 </div>

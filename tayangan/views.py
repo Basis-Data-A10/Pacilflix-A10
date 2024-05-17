@@ -1,4 +1,6 @@
 import random
+from urllib.parse import quote
+import urllib.parse
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib.auth.decorators import login_required
@@ -15,24 +17,36 @@ def execute_query(query):
             for row in cursor.fetchall()
         ]
 
+
 def episode(request, series_id, episode_number):
     episode_number = int(episode_number)
     with connection.cursor() as cursor:
-        cursor.execute(f"SELECT judul FROM TAYANGAN WHERE id = '{series_id}'")
+        # Mendapatkan judul tayangan
+        cursor.execute("SELECT judul FROM TAYANGAN WHERE id = %s", [series_id])
         series_title = cursor.fetchone()
 
-        cursor.execute(f"SELECT * FROM EPISODE WHERE id_series = '{series_id}'")
+        # Mendapatkan semua episode untuk id_series tertentu
+        cursor.execute("SELECT * FROM EPISODE WHERE id_series = %s", [series_id])
         episodes = cursor.fetchall()
-        episodes_with_index = [(i, *episode) for i, episode in enumerate(episodes)]
+        episodes_num = [(i, *episode) for i, episode in enumerate(episodes)]
 
+        # Memilih episode berdasarkan episode_number
         if 0 <= episode_number < len(episodes):
             episode = episodes[episode_number]
+            episode_details = {
+                'id': episode[0],
+                'sub_judul': episode[1],
+                'sinopsis': episode[2],
+                'durasi': episode[3],
+                'url_video': episode[4],
+                'release_date': episode[5],
+            }
         else:
-            episode = None
+            episode_details = None
 
     context = {
-        'episodes' : episodes_with_index,
-        'episode': episode,
+        'episodes': episodes_num,
+        'episode': episode_details,
         'series_title': series_title[0] if series_title else None,  # Ensure series_title is not None before accessing the title
     }
     return render(request, 'hal_eps.html', context)
@@ -52,7 +66,7 @@ def film(request, film_id):
             genres = [genre[0] for genre in cursor.fetchall()]
 
             cursor.execute(
-                f"SELECT release_date_film, durasi_film FROM FILM WHERE id_tayangan = '{film_id}'"
+                f"SELECT url_video_film, release_date_film, durasi_film FROM FILM WHERE id_tayangan = '{film_id}'"
             )
             film_info = cursor.fetchone()
 
@@ -71,42 +85,43 @@ def film(request, film_id):
             cursor.execute(
                 f"SELECT id_pemain FROM MEMAINKAN_TAYANGAN WHERE id_tayangan = '{film_id}'"
             )
-            id_para_pemain = cursor.fetchall()
+            pemain_ids = cursor.fetchall()
 
-            nama_para_pemain = []
-            for id_pemain in id_para_pemain:
+            pemain_names = []
+            for pemain_id in pemain_ids:
                 cursor.execute(
                     f"SELECT nama FROM CONTRIBUTORS WHERE id = '{pemain_id[0]}'"
                 )
-                nama_pemain = cursor.fetchone()
-                if nama_pemain:
-                    nama_para_pemain.append(nama_pemain[0])
+                pemain_name = cursor.fetchone()
+                if pemain_name:
+                    pemain_names.append(pemain_name[0])
 
-            pemain = nama_para_pemain if nama_para_pemain else None
+            pemain = pemain_names if pemain_names else None
 
             cursor.execute(
                 f"SELECT id_penulis_skenario FROM MENULIS_SKENARIO_TAYANGAN WHERE id_tayangan = '{film_id}'"
             )
-            id_para_penulis = cursor.fetchall()
+            penulis_ids = cursor.fetchall()
 
-            nama_para_pemain = []
-            for id_penulis in id_para_penulis:
+            penulis_names = []
+            for penulis_id in penulis_ids:
                 cursor.execute(
-                    f"SELECT nama FROM CONTRIBUTORS WHERE id = '{id_penulis[0]}'"
+                    f"SELECT nama FROM CONTRIBUTORS WHERE id = '{penulis_id[0]}'"
                 )
-                nama_penulis = cursor.fetchone()
-                if nama_penulis:
-                    nama_para_penulis.append(nama_penulis[0])
+                penulis_name = cursor.fetchone()
+                if penulis_name:
+                    penulis_names.append(penulis_name[0])
 
-            penulis = nama_para_penulis if nama_para_penulis else None
+            penulis = penulis_names if penulis_names else None
 
             film_details = {
                 'judul': film_details[0],
                 'sinopsis': film_details[1],
                 'asal_negara': film_details[2],
                 'genres': genres,
-                'release_date_film': film_info[0],
-                'durasi_film': film_info[1],
+                'url_video_film' : film_info[0],
+                'release_date_film': film_info[1],
+                'durasi_film': film_info[2],
                 'sutradara': director,
                 'pemain' : pemain,
                 'penulis' : penulis,
@@ -116,7 +131,6 @@ def film(request, film_id):
     return render(request, 'hal_film.html', {'film_details': film_details})
 
 def series(request, series_id):
-    episodes = []
     with connection.cursor() as cursor:
         cursor.execute(
             f"SELECT judul, sinopsis, asal_negara FROM TAYANGAN WHERE id = '{series_id}'"
@@ -128,7 +142,6 @@ def series(request, series_id):
                 f"SELECT genre FROM GENRE_TAYANGAN WHERE id_tayangan = '{series_id}'"
             )
             genres = [genre[0] for genre in cursor.fetchall()]
-
 
             cursor.execute(
                 f"SELECT id_sutradara FROM TAYANGAN WHERE id = '{series_id}'"
@@ -145,38 +158,37 @@ def series(request, series_id):
             cursor.execute(
                 f"SELECT id_pemain FROM MEMAINKAN_TAYANGAN WHERE id_tayangan = '{series_id}'"
             )
-            id_para_pemain = cursor.fetchall()
-
+            pemain_ids = cursor.fetchall()
             pemain_names = []
-            for id_pemain in id_para_pemain:
+            for pemain_id in pemain_ids:
                 cursor.execute(
-                    f"SELECT nama FROM CONTRIBUTORS WHERE id = '{id_pemain[0]}'"
+                    f"SELECT nama FROM CONTRIBUTORS WHERE id = '{pemain_id[0]}'"
                 )
-                nama_pemain = cursor.fetchone()
-                if nama_pemain:
-                    nama_para_pemain.append(nama_pemain[0])
-
-            pemain = nama_para_pemain if nama_para_pemain else None
+                pemain_name = cursor.fetchone()
+                if pemain_name:
+                    pemain_names.append(pemain_name[0])
+            pemain = pemain_names if pemain_names else None
 
             cursor.execute(
                 f"SELECT id_penulis_skenario FROM MENULIS_SKENARIO_TAYANGAN WHERE id_tayangan = '{series_id}'"
             )
-            id_para_penulis = cursor.fetchall()
-
-            nama_para_penulis = []
-            for id_penulis in id_para_penulis:
+            penulis_ids = cursor.fetchall()
+            penulis_names = []
+            for penulis_id in penulis_ids:
                 cursor.execute(
-                    f"SELECT nama FROM CONTRIBUTORS WHERE id = '{id_penulis[0]}'"
+                    f"SELECT nama FROM CONTRIBUTORS WHERE id = '{penulis_id[0]}'"
                 )
-                nama_penulis= cursor.fetchone()
-                if nama_penulis:
-                    nama_para_penulis.append(nama_penulis[0])
+                penulis_name = cursor.fetchone()
+                if penulis_name:
+                    penulis_names.append(penulis_name[0])
+            penulis = penulis_names if penulis_names else None
 
-            penulis = nama_para_penulis if nama_para_penulis else None
-
-            cursor.execute(f"SELECT * FROM EPISODE WHERE id_series = '{series_id}'")
-            episodes = cursor.fetchall()
-            episodes_with_index = [(i, *episode) for i, episode in enumerate(episodes)]
+            # Mendapatkan detail episode
+            cursor.execute(f"""SELECT id_series, sub_judul
+                               FROM EPISODE
+                               WHERE id_series = '{series_id}';""")
+            episodes_data = cursor.fetchall()
+            episodes_num = [(i, *episode) for i, episode in enumerate(episodes_data)]
 
             series_details = {
                 'judul': series_details[0],
@@ -187,10 +199,16 @@ def series(request, series_id):
                 'pemain' : pemain,
                 'penulis' : penulis,
                 'id_tayangan' : series_id,
-                'episodes' : episodes_with_index,
+                'episodes' : episodes_num,
             }
 
-    return render(request, 'hal_series.html', {'series_details': series_details})
+            return render(request, 'hal_series.html', {'series_details': series_details})
+        else:
+            # Handle case when series_details is not found
+            # For example, return an error page or redirect to another page
+            return HttpResponse("Series not found", status=404)
+
+
 
 def tayangan(request):
     films = []
@@ -234,6 +252,27 @@ def tayangan(request):
     }
     response = render(request, 'daftar_tayangan.html', context)
     return response
+
+
+def show_hasil_pencarian_tayangan(request, value):
+    checked_value = check_string_valid(value)
+    tayangan = execute_query(f"""SELECT id, judul, sinopsis_trailer, url_video_trailer, release_date_trailer
+                                FROM TAYANGAN
+                                WHERE LOWER(judul) LIKE LOWER('%{checked_value}%');""")
+
+    paket = execute_query(f"""SELECT
+                                 CASE
+                                     WHEN MAX(end_date_time) > CURRENT_DATE THEN 1
+                                     ELSE 0
+                                 END AS is_valid
+                             FROM TRANSACTION
+                             WHERE username = '{request.COOKIES.get('username')}';""")
+
+    context = {"tayangan": tayangan,
+               "searchvalue": value,
+               "paket": paket[0]}
+
+    return render(request, 'hasil_search.html', context)
 
 
 def insert_unduhan(request):
@@ -285,4 +324,15 @@ def insert_favorit(request):
     return redirect('daftar_favorit:daftar_favorit')
 
 def open_ulasan(request, tayangan_id):
-    return redirect('ulasan:hal_ulasan', tayangan_id)
+    return redirect('ulasan:hal_ulasan', id_tayangan=tayangan_id)
+
+def check_string_valid(string):
+    new_string = ''
+    for char in string:
+        if char == "'":
+            new_string += "''"
+        elif char == "\\":
+            new_string += "\\\\"
+        else:
+            new_string += char
+    return new_string
