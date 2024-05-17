@@ -11,7 +11,6 @@ urlpatterns = [
     path('series/<series_id>/', series, name='series'),
     path('', tayangan, name='tayangan'),
     path('insert_unduhan/', insert_unduhan, name='insert_unduhan'),
-    path('list_favorit/', list_favorit, name='list_favorit'),
     path('insert_favorit/', insert_favorit, name='insert_favorit'),
     path('go_to_unduhan/', go_to_unduhan, name='go_to_unduhan'),
     path('ulasan/<tayangan_id>', open_ulasan, name='open_ulasan'),
