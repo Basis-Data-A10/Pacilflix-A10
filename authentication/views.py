@@ -1,5 +1,7 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth import logout as auth_logout
+from django.urls import reverse
 from pacilflix_function.functions import *
 from pacilflix_function.authentication import *
 from utils.query import *
@@ -30,5 +32,9 @@ def login(request):
     return render(request, 'login_page.html', context)
 
 def logout(request):
+    response = HttpResponseRedirect(reverse('authentication:show_landing'))
+    response.delete_cookie('username')
+    response.delete_cookie('negara')
+    response.delete_cookie('is_authenticated')
     auth_logout(request)
-    return redirect('authentication:show_landing')
+    return response
