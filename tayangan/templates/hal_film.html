@@ -101,10 +101,11 @@
         <p>Sutradara: {{ film_details.sutradara }}</p>
     </div>
     <div class="section">
+        {% if film_details.is_released %}
         <button class="button">
             <a href="{{ film_details.url_video_film }}" style="color: inherit; text-decoration: none;">Tonton</a>
         </button>
-
+        {% endif %}
         <button class="button" onclick="downloadTayangan('{{ film_details.id_tayangan }}')" data-bs-toggle="modal" data-bs-target="#downloadModal">Unduh Tayangan</button>
         <button class="button" onclick="loadModalFavorit()">Favorit Tayangan</button>
 
