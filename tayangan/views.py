@@ -5,8 +5,10 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from datetime import datetime
 from django.http import HttpResponse
+from datetime import datetime, timedelta
+
+
 
 def execute_query(query):
     with connection.cursor() as cursor:
@@ -16,7 +18,6 @@ def execute_query(query):
             dict(zip(columns, row))
             for row in cursor.fetchall()
         ]
-
 
 def episode(request, series_id, episode_number):
     episode_number = int(episode_number)
@@ -113,12 +114,15 @@ def film(request, film_id):
                     penulis_names.append(penulis_name[0])
 
             penulis = penulis_names if penulis_names else None
+            release_date_film = film_info[1]  # This is already a datetime.date object
+            is_released = release_date_film <= datetime.now().date()
 
             film_details = {
                 'judul': film_details[0],
                 'sinopsis': film_details[1],
                 'asal_negara': film_details[2],
                 'genres': genres,
+                'is_released': is_released,
                 'url_video_film' : film_info[0],
                 'release_date_film': film_info[1],
                 'durasi_film': film_info[2],
@@ -208,50 +212,70 @@ def series(request, series_id):
             # For example, return an error page or redirect to another page
             return HttpResponse("Series not found", status=404)
 
-
-
 def tayangan(request):
-    films = []
-    seriess = []
+#     if 'username' not in request.session or 'username' not in request.COOKIES:
+#         return redirect('authentication:show_landing')
 
-    with connection.cursor() as cursor:
-        cursor.execute(
-            f'SELECT * FROM FILM;')
-        films = cursor.fetchall()
-        for i in range(len(films)):
-            cursor.execute(
-                f'SELECT judul, sinopsis, url_video_trailer, release_date_trailer, id FROM TAYANGAN WHERE id = \'{films[i][0]}\'' )
-            details = cursor.fetchone()
-            films[i] = details + ('film',)
+    top_10_query = f"""
+        WITH durasi_tayangan AS (
+            SELECT T.id AS id, F.durasi_film AS durasi
+            FROM TAYANGAN AS T
+            JOIN FILM AS F ON F.id_tayangan = T.id
+            UNION
+            SELECT T.id AS id, AVG(E.durasi) AS durasi
+            FROM TAYANGAN AS T
+            JOIN SERIES AS S ON S.id_tayangan = T.id
+            JOIN EPISODE AS E ON E.id_series = T.id
+            GROUP BY T.id
+        ), recent_views AS (
+            SELECT T.id AS id, EXTRACT(EPOCH FROM (RW.end_date_time - RW.start_date_time)) / 60 AS watch_time
+            FROM TAYANGAN AS T
+            JOIN RIWAYAT_NONTON AS RW ON RW.id_tayangan = T.id
+            WHERE RW.start_date_time >= NOW() - INTERVAL '7 DAYS'
+        )
+        SELECT T.id, T.judul, T.sinopsis_trailer, T.url_video_trailer, T.release_date_trailer, COUNT(RV.id) as total_view,
+               CASE
+                   WHEN EXISTS (SELECT 1 FROM FILM AS F WHERE F.id_tayangan = T.id) THEN 'film'
+                   ELSE 'series'
+               END AS tipe_tayangan
+        FROM TAYANGAN AS T
+        JOIN durasi_tayangan AS DT ON DT.id = T.id
+        JOIN recent_views AS RV ON RV.id = T.id
+        WHERE RV.watch_time > (0.7 * DT.durasi)
+        GROUP BY T.id, T.judul, T.sinopsis_trailer, T.url_video_trailer, T.release_date_trailer
+        ORDER BY total_view DESC, T.judul ASC
+        LIMIT 10;
+    """
 
-        cursor.execute(
-            f'SELECT * FROM SERIES;')
-        seriess = cursor.fetchall()
-        for i in range(len(seriess)):
-            cursor.execute(
-                f'SELECT judul, sinopsis, url_video_trailer, release_date_trailer, id FROM TAYANGAN WHERE id = \'{seriess[i][0]}\'' )
-            details_series = cursor.fetchone()
-            seriess[i] = details_series + ('series',)
+    film_query = f"""
+        SELECT T.id, T.judul, T.sinopsis_trailer, T.url_video_trailer, T.release_date_trailer
+        FROM TAYANGAN AS T
+        JOIN FILM AS F ON F.id_tayangan = T.id;
+    """
 
+    series_query = f"""
+        SELECT T.id, T.judul, T.sinopsis_trailer, T.url_video_trailer, T.release_date_trailer
+        FROM TAYANGAN AS T
+        JOIN SERIES AS S ON S.id_tayangan = T.id;
+    """
 
-    tayangan = films + seriess
+    top_10 = execute_query(top_10_query)
+    film = execute_query(film_query)
+    series = execute_query(series_query)
 
-    # Shuffle and select 10 random items
-    random.shuffle(tayangan)
-    tayangan = tayangan[:10]
-
-    tayangan_first_half = tayangan[:5]
-    tayangan_second_half = tayangan[5:]
+    # Menambahkan peringkat
+    rank = 1
+    for i in top_10:
+        i['rank'] = rank
+        rank += 1
 
     context = {
-        'films': films,
-        'seriess' : seriess,
-        'tayangan' : tayangan,
-        'tayangan_first_half': tayangan_first_half,
-        'tayangan_second_half': tayangan_second_half,
+        "film": film,
+        "series": series,
+        "top_10": top_10,
     }
-    response = render(request, 'daftar_tayangan.html', context)
-    return response
+
+    return render(request, 'daftar_tayangan.html', context)
 
 
 def show_hasil_pencarian_tayangan(request, value):
