@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from authentication.views import *
+from tayangan.views import *
 
 def query_register(username, password, negara_asal, request):
   cursor = connection.cursor()
@@ -30,7 +31,7 @@ def query_login(username, password, request):
     # messages.success(request, f'Login success! Welcome to PacilFlix, {username}!')
     print(f'Login to {username} succeeded!')
     # response = HttpResponseRedirect(reverse("authentication:show_landing"))  # NANTI JADI TAYANGAN!!!
-    response = redirect('authentication:show_landing')
+    response = redirect('tayangan:tayangan')
     response.set_cookie('username', username)
     response.set_cookie('password', password)
     response.set_cookie('authenticated', 'True')
@@ -39,8 +40,9 @@ def query_login(username, password, request):
     print('Login failed! Please try again.')
     messages.error(request, 'Login failed! Please try again.')
 
-def query_logout(request):
-  response = HttpResponseRedirect(reverse("authentication:show_landing"))
+def query_logout(response):
+  response = redirect('authentication:show_landing')
+  # response = HttpResponseRedirect(reverse("authentication:show_landing"))
   response.delete_cookie('username')
   response.delete_cookie('password')
   response.delete_cookie('authenticated')
