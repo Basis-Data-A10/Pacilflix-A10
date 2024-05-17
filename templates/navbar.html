@@ -51,16 +51,16 @@
                 <a class="nav-link" href="{% url 'tayangan:tayangan' %}">Daftar Tayangan</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Daftar Kontributor</a>
+                <a class="nav-link" href="{% url 'langganan:daftar_kontributor' %}">Daftar Kontributor</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Kelola Daftar Favorit</a>
+                <a class="nav-link" href="{% url 'daftar_favorit:show_favorite' %}">Daftar Favorit</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Kelola Daftar Unduhan</a>
+                <a class="nav-link" href="{% url 'daftar_unduhan:show_downloads' %}">Daftar Unduhan</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Kelola Langganan</a>
+                <a class="nav-link" href="{% url 'langganan:langganan' %}">Kelola Langganan</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'authentication:logout' %}">Logout

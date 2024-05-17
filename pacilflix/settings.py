@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-from dotenv import load_dotenv
+from dotenv import *
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -143,3 +143,8 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_URL = 'authentication:login/'
+
+SESSION_COOKIE_AGE = 1800  
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

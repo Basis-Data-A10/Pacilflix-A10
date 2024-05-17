@@ -11,130 +11,198 @@
         <title>Daftar Unduhan</title>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <style>
-            body {
-                font-family: 'Roboto', sans-serif;
-                margin: 0;
-                padding: 0;
-                text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                background: #0C0C0C;
-                color: #8f8f8f;
-                background-image: linear-gradient(#9B3922, #F2613F);
-            }
-            
-            .content {
-                text-align: center;
-                margin-top: -50px;
-                color: black;
-                background-color: white;
-                border: 2px solid black;
-                border-radius: 10px;
-                padding: 20px;
-            }
-            .title {
-                font-size: 36px;
-                color: #0C0C0C;
-                margin-bottom: 10px;
-                font-weight: 700;
-                letter-spacing: 0.1em;
-            }
-            .separator {
-                border-top: 2px solid black;
-                margin: 10px auto;
-                width: 50px;
-            }
-            .subtitle {
-                font-size: 24px;
-                color: #0C0C0C;
-                margin-bottom: 20px;
-                font-weight: 700;
-                letter-spacing: 0.1em;
-            }
-            .button {
-                display: inline-block;
-                padding: 10px 20px;
-                margin: 10px;
-                background-color: #333;
-                color: white;
-                text-decoration: none;
-                border-radius: 5px;
-                font-weight: 700;
-                letter-spacing: 0.1em;
-            }
-            .button:hover {
-                background-color: #333;
-            }
-            table {
-                border-collapse: collapse;
-                border: 1px solid black;
-                text-align: center;
-                vertical-align: middle;
-            }
-            th, td {
-                padding: 8px;
-            }
-            thead {
-                background-color: #333;
-                color: white;
-                font-size: 0.9rem;
-                text-transform: uppercase;
-                letter-spacing: 2%;
-            }
-            tbody tr:nth-child(odd) {
-                background-color: #fff;
-            }
+         html, body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #0C0C0C;
+            color: #8f8f8f;
+            background-image: linear-gradient(#9B3922, #F2613F);
+            display: flex;
+            flex-direction: column;
+        }
 
-            tbody tr:nth-child(even) {
-                background-color: #eee;
-            }
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-            }
-            li a {
-                display: block;
-                width: 60px;
-            }
-            nav {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-            }
+        nav {
+            height: 72px;
+            width: 100%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding-top: 72px; /* Ensures content starts below the navbar */
+            width: 100%;
+        }
+
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .content {
+            text-align: center;
+            color: black;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 36px;
+            color: #0C0C0C;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .separator {
+            border-top: 2px solid black;
+            margin: 10px auto;
+            width: 50px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #0C0C0C;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .button:hover {
+            background-color: #444;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+
+        thead {
+            background-color: #333;
+            color: white;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2%;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #eee;
+        }
+
+        .empty-message {
+            font-size: 18px;
+            color: #0C0C0C;
+            margin-top: 20px;
+        }
         </style>
     </head>
     <body>
         {% include 'navbar.html' %}
-        <div class="content">
-            <div class="title">Daftar Unduhan</div>
-            <div class="separator"></div>
-            <table>
-            <thead>
-                <tr>
-                    <th>Judul</th>
-                    <th>Waktu Diunduh</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for download in downloads %}
-                <tr>
-                    <td>{{ download.0 }}</td>
-                    <td>{{ download.1|date:"d-m-Y H:i:s" }}</td>
-                    <td>
-                        <a href="{% url 'daftar_unduhan:delete_download' download.2 %}" class="button">Hapus</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="container">
+            <div class="content-wrapper">
+                <div class="content">
+                    <div class="title">Daftar Unduhan</div>
+                    <div class="separator"></div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Judul</th>
+                                <th>Waktu Diunduh</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for download in downloads %}
+                            <tr>
+                                <td>{{ download.0 }}</td>
+                                <td>{{ download.1|date:"d-m-Y H:i:s" }}</td>
+                                <td>
+                                    <a href="{% url 'daftar_unduhan:delete_download' download.2 %}" class="button">Hapus</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">GAGAL MENGHAPUS TAYANGAN DARI DAFTAR UNDUHAN</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Tayangan minimal harus berada di daftar unduhan selama 1 hari agar bisa dihapus.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        {% if error_deletion %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                $('#errorModal').modal('show');
+            });
+        </script>
+        {% endif %}
     </body>
 </html>
-
 {% endblock content %}
