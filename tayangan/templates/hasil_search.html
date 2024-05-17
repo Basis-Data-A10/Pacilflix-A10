@@ -3,53 +3,34 @@
 {% block content %}
 {% include 'navbar.html' %}
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
     html, body {
-        height: 100%; /* Mengatur tinggi html dan body */
+        height: 100%;
         margin: 0;
         padding: 0;
-        width: 100%; /* Mengatur lebar html dan body */
-    }
-
-    body {
-        background: linear-gradient(to bottom,#bb301a, #ed7e59); /* Gradient diterapkan ke body */
-        display: flex;
-        flex-direction: column; /* Membantu mengatur flow isi secara vertikal */
+        background: linear-gradient(to bottom, #bb301a, #ed7e59);
         font-family: 'Lato', sans-serif;
     }
-
     .container {
-        flex: 1; /* Membuat container mengisi ruang yang tersedia */
-        width: 80%;
-        margin: auto;
-        padding-top: 50px;
-    }
-
-    .table-custom {
-        border-collapse: collapse;
-        width: 100%;
-        border-radius: 10px;
-        overflow: hidden;
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.543);
-    }
-
-    .table-custom th, .table-custom td {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-
-    .table-custom th {
-        background-color: rgba(23, 9, 9, 0.809);
-        color: white;
-        font-weight: 700;
-    }
-
-    .table-custom td {
-        font-weight: 400;
+        margin-top: 50px;
     }
 
     .search-bar {
-        margin: 20px 0;
+        margin-bottom: 20px;
+    }
+    .button-custom {
+        background-color: rgba(28, 15, 15, 0.569);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px 0;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    h1, h2 {
+        color: white;
     }
 
     .search-input {
@@ -58,15 +39,28 @@
         border-radius: 5px;
         border: 1px solid #ddd;
     }
-
     .search-button {
         padding: 10px 20px;
-        border-radius: 5px;
-        background-color: rgba(0,0,0,0.1);
-        color: white;
-        border: none;
+        border-radius: 20px;
+        background-color: white;
+        color: black;
+        border: 1px solid #ddd;
         cursor: pointer;
         font-size: 16px;
+    }
+    table {
+        width: 100%;
+        background-color: #fff;
+        color: #54362d;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
     }
 </style>
 
