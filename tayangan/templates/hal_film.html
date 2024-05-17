@@ -1,64 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% include 'navbar.html' %}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-
     body {
         font-family: 'Lato', sans-serif;
-        background: linear-gradient(to bottom, #bb301a, #ed7e59); /* Background gradasi gelap */
+        background: linear-gradient(to bottom, #bb301a, #ed7e59);
     }
-
     .container {
-        width: 80%;
-        margin: auto;
-        padding-top: 20px;
-        color: #202021;
-        background-color: #f3c7b9; /* Dark mode background */
-        padding: 20px;
-        border-radius: 10px;
+        width: 80%; margin: auto; padding: 20px;
+        background-color: #f3c7b9; border-radius: 10px;
         box-shadow: 0 8px 16px rgba(0,0,0,0.25);
     }
-
     .section {
-        background-color: #fce9e4; /* Slightly lighter dark shade for sections */
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 20px;
+        background-color: #fce9e4; padding: 15px;
+        border-radius: 5px; margin-bottom: 20px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
-
-    h1, h2 {
-        color: #1c1d1d;
+    h1, h2, p, li {
+        color: #1c1d1d; margin-bottom: 10px;
     }
-
     p, li {
-        color: #2c2c2c; /* Lighter grey text for readability */
+        color: #2c2c2c;
     }
-
+    a { color: #54362d; text-decoration: none; }
     .button {
-        padding: 10px 20px;
-        border-radius: 5px;
-        background-color: #54362d; /* Muted button color */
-        color: #fff7f5;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 10px;
-        display: inline-block;
+        padding: 10px 20px; margin-top: 10px; margin-right: 10px;
+        background-color: #54362d; color: #fff7f5; border-radius: 5px;
+        border: none; cursor: pointer; font-size: 16px; display: inline-block;
     }
-
-    .button:not(:last-child) {
-        margin-right: 10px;
-    }
-
-    ul {
-        padding: 0;
-        list-style-type: none;
-    }
-
-    li {
-        padding: 5px 0;
+    ul, li {
+        list-style-type: none; padding: 0;
     }
 </style>
 
@@ -67,47 +40,22 @@
         <h1>Judul Film: Gladiator</h1>
         <p><strong>Total View:</strong> 2,500,000</p>
         <p><strong>Rating Rata-Rata:</strong> 8.5/10</p>
-    </div>
-    <div class="section">
         <p><strong>Sinopsis:</strong> When a Roman general is betrayed and his family murdered by an emperor's corrupt son, he comes to Rome as a gladiator to seek revenge.</p>
         <p><strong>Durasi Film:</strong> 155 minutes</p>
         <p><strong>Tanggal Rilis Film:</strong> 2000-05-05</p>
         <p><strong>URL Film:</strong> <a href="http://example.com">Watch Gladiator</a></p>
     </div>
     <div class="section">
-        <p><strong>Genre:</strong></p>
-        <ul>
-            <li>Action</li>
-            <li>Drama</li>
-            <li>Historical</li>
-        </ul>
-    </div>
-    <div class="section">
+        <p><strong>Genre:</strong> Action, Drama, Historical</p>
         <p><strong>Asal Negara:</strong> USA</p>
-        <p><strong>Pemain:</strong></p>
-        <ul>
-            <li>Russell Crowe</li>
-            <li>Joquin Phoenix</li>
-            <li>Connie Nielsen</li>
-        </ul>
-    </div>
-    <div class="section">
-        <p><strong>Penulis Skenario:</strong></p>
-        <ul>
-            <li>David Franzoni</li>
-            <li>John Logan</li>
-            <li>William Nicholson</li>
-        </ul>
+        <p><strong>Pemain:</strong> Russell Crowe, Joquin Phoenix, Connie Nielsen</p>
+        <p><strong>Penulis Skenario:</strong> David Franzoni, John Logan, William Nicholson</p>
         <p><strong>Sutradara:</strong> Ridley Scott</p>
     </div>
-
-    <!-- Buttons in their own section for emphasis -->
     <div class="section">
         <button class="button">Tonton</button>
         <button class="button">Unduh Tayangan</button>
         <button class="button">Favorit Tayangan</button>
     </div>
-    
-    <!-- Bagian Ulasan akan ditambahkan di sini -->
 </div>
 {% endblock content %}
