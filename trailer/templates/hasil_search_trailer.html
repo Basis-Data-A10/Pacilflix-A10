@@ -80,7 +80,6 @@
             <th scope="col">Sinopsis Trailer</th>
             <th scope="col">URL Trailer</th>
             <th scope="col">Tanggal Rilis Trailer</th>
-            <th scope="col">Tayangan</th>
         </tr>
         </thead>
         <tbody>
@@ -90,13 +89,6 @@
             <td>{{ item.sinopsis_trailer }}</td>
             <td>{{ item.url_video_trailer }}</td>
             <td>{{ item.release_date_trailer }}</td>
-            <td>
-                {% if paket.is_valid == 1 %}
-                <a href="/tayangan/film/{{ item.id }}" class="text-white hover:text-gray-300 me-2">
-                    <button type="button" class="btn btn-primary mb-2">Tombol ke Tayangan</button>
-                </a>
-                {% endif %}
-            </td>
         </tr>
         {% endfor %}
         </tbody>
