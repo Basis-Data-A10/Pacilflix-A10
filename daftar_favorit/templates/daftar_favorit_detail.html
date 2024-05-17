@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Favorit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+        html, body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #0C0C0C;
+            color: #8f8f8f;
+            background-image: linear-gradient(#9B3922, #F2613F);
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            height: 72px;
+            width: 100%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding-top: 72px; /* Ensures content starts below the navbar */
+        }
+
+        .content {
+            text-align: center;
+            color: black;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 36px;
+            color: #0C0C0C;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .separator {
+            border-top: 2px solid black;
+            margin: 10px auto;
+            width: 50px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .button:hover {
+            background-color: #444;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+
+        thead {
+            background-color: #333;
+            color: white;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2%;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #eee;
+        }
+
+        .empty-message {
+            font-size: 18px;
+            color: #0C0C0C;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <div class="content">
+            <div class="title">Detail Daftar Favorit</div>
+            <div class="separator"></div>
+            {% if favorite_detail %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Judul Tayangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detail in favorite_detail %}
+                        <tr>
+                            <td>{{ detail.0 }}</td>
+                            <td>
+                                <a href="{% url 'daftar_favorit:delete_favorite_film' detail.1 detail.2 %}" class="button">Hapus</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-message">Daftar favorit ini kosong.</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}

@@ -1,113 +1,229 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(to bottom, #bb301a, #ed7e59);
+            color: #1c1d1d;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #f3c7b9;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+        }
+        .section {
+            background-color: #fce9e4;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        h1, h2, p, li {
+            margin-bottom: 10px;
+        }
+        p, li {
+            color: #2c2c2c;
+        }
+        a {
+            color: #54362d;
+            text-decoration: none;
+        }
+        .button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            margin-right: 10px;
+            background-color: #54362d;
+            color: #fff7f5;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+        }
+        .modal-content {
+            background-color: #fce9e4; /* Sesuaikan dengan tema */
+            color: #1c1d1d;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .film-reviews a {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+        }
+        ul, li {
+            list-style-type: none;
+            padding: 0;
+        }
+    </style>
+</head>
+{% endblock meta %}
 
 {% block content %}
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-
-    body {
-        font-family: 'Lato', sans-serif;
-        background: linear-gradient(to bottom, #bb301a, #ed7e59); /* Background gradasi gelap */
-    }
-
-    .container {
-        width: 80%;
-        margin: auto;
-        padding-top: 20px;
-        color: #202021;
-        background-color: #f3c7b9; /* Dark mode background */
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.25);
-    }
-
-    .section {
-        background-color: #fce9e4; /* Slightly lighter dark shade for sections */
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
-    h1, h2 {
-        color: #1c1d1d;
-    }
-
-    p, li {
-        color: #2c2c2c; /* Lighter grey text for readability */
-    }
-
-    .button {
-        padding: 10px 20px;
-        border-radius: 5px;
-        background-color: #54362d; /* Muted button color */
-        color: #fff7f5;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 10px;
-        display: inline-block;
-    }
-
-    .button:not(:last-child) {
-        margin-right: 10px;
-    }
-
-    ul {
-        padding: 0;
-        list-style-type: none;
-    }
-
-    li {
-        padding: 5px 0;
-    }
-</style>
-
 <div class="container">
     <div class="section">
-        <h1>Judul Film: Gladiator</h1>
-        <p><strong>Total View:</strong> 2,500,000</p>
-        <p><strong>Rating Rata-Rata:</strong> 8.5/10</p>
+        <h1>{{ film_details.judul }}</h1>
+        <input type="range" class="form-range" min="0" max="100" id="watchrange">
+        <p>{{ film_details.sinopsis }}</p>
+        <p>Tanggal Rilis: {{ film_details.release_date_film }}</p>
+        <p>Genre:
+            {% for genre in film_details.genres %}
+            {{ genre }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <p>Asal Negara: {{ film_details.asal_negara }}</p>
+        <p>Durasi: {{ film_details.durasi_film }} mins</p>
+        <p>Pemain:
+            {% for pemain in film_details.pemain %}
+            {{ pemain }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <p>Penulis Skenario:
+            {% for penulis in film_details.penulis %}
+            {{ penulis }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <p>Sutradara: {{ film_details.sutradara }}</p>
     </div>
     <div class="section">
-        <p><strong>Sinopsis:</strong> When a Roman general is betrayed and his family murdered by an emperor's corrupt son, he comes to Rome as a gladiator to seek revenge.</p>
-        <p><strong>Durasi Film:</strong> 155 minutes</p>
-        <p><strong>Tanggal Rilis Film:</strong> 2000-05-05</p>
-        <p><strong>URL Film:</strong> <a href="http://example.com">Watch Gladiator</a></p>
-    </div>
-    <div class="section">
-        <p><strong>Genre:</strong></p>
-        <ul>
-            <li>Action</li>
-            <li>Drama</li>
-            <li>Historical</li>
-        </ul>
-    </div>
-    <div class="section">
-        <p><strong>Asal Negara:</strong> USA</p>
-        <p><strong>Pemain:</strong></p>
-        <ul>
-            <li>Russell Crowe</li>
-            <li>Joquin Phoenix</li>
-            <li>Connie Nielsen</li>
-        </ul>
-    </div>
-    <div class="section">
-        <p><strong>Penulis Skenario:</strong></p>
-        <ul>
-            <li>David Franzoni</li>
-            <li>John Logan</li>
-            <li>William Nicholson</li>
-        </ul>
-        <p><strong>Sutradara:</strong> Ridley Scott</p>
-    </div>
+        <button class="button">
+            <a href="{{ film_details.url_video_film }}" style="color: inherit; text-decoration: none;">Tonton</a>
+        </button>
 
-    <!-- Buttons in their own section for emphasis -->
-    <div class="section">
-        <button class="button">Tonton</button>
-        <button class="button">Unduh Tayangan</button>
-        <button class="button">Favorit Tayangan</button>
+        <button class="button" onclick="downloadTayangan('{{ film_details.id_tayangan }}')" data-bs-toggle="modal" data-bs-target="#downloadModal">Unduh Tayangan</button>
+        <button class="button" onclick="loadModalFavorit()">Favorit Tayangan</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="downloadModalLabel">Sukses Menambahkan Tayangan ke Daftar Unduhan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <!-- Text will be inserted here by JavaScript -->
+                    </div>
+                    <a type="button" class="btn btn-primary" href="{% url 'tayangan:go_to_unduhan' %}">Menuju Daftar Unduhan</a>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="favorite" onclick="loadModalFavorit()">
+            Favorit
+        </button>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     </div>
-    
-    <!-- Bagian Ulasan akan ditambahkan di sini -->
+    <div class="film-reviews">
+        <a type="button" href="{% url 'tayangan:open_ulasan' film_details.id_tayangan %}">Ulasan</button>
+        </a>
+    </div>
 </div>
+</body>
+
+<!-- Load jQuery first -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!-- Then Popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<!-- Then Bootstrap's JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    function downloadTayangan(idTayangan) {
+        fetch("{% url 'tayangan:insert_unduhan' %}?id_tayangan=" + idTayangan, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateToday = new Date();
+        const dateInSevenDays = new Date(dateToday);
+        dateInSevenDays.setDate(dateToday.getDate() + 7);
+
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedToday = dateToday.toLocaleDateString('id-ID', options);
+        const formattedSevenDays = dateInSevenDays.toLocaleDateString('id-ID', options);
+
+        const modalBodyText = `Selamat! Anda telah berhasil mengunduh {{ film_details.judul }} dan akan berlaku hingga ${formattedSevenDays}. Cek informasi selengkapnya pada halaman daftar unduhan.`;
+        document.getElementById('modalBody').textContent = modalBodyText;
+    });
+
+    function loadModalFavorit() {
+        fetch('/tayangan/list_favorit/')
+            .then(response => response.json())
+            .then(data => {
+                createModal(data.dropdown_options, data.id_tayangan);
+            });
+    }
+
+    function createModal(options, id_tayangan) {
+        // Create modal structure
+        let modal = document.createElement('div');
+        modal.classList.add('modal', 'fade');
+        modal.id = 'dynamicModal';
+        modal.innerHTML = `
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="favoriteModalLabel">Tambah ke Daftar Favorit</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="favoriteListDropdown" class="form-label">Judul Daftar Favorit:</label>
+                                <select class="form-control" id="dropdown">
+                                    ${options.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
+                                </select>
+                            </div>
+                            <a type="button" class="btn btn-primary" id="addFavorite"">Tambah</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Append modal to body
+        document.body.appendChild(modal);
+
+        // Show the modal
+        $('#dynamicModal').modal('show');
+
+        document.getElementById('addFavorite').addEventListener('click', function() {
+            var dropdownValue = document.getElementById('dropdown').value;
+            var redirectUrl = `{% url 'tayangan:insert_favorit' %}?id_tayangan={{ film_details.id_tayangan }}&timestamp=${dropdownValue}`;
+            window.location.href = redirectUrl;
+        });
+
+        // Remove the modal from DOM after it's hidden
+        $('#dynamicModal').on('hidden.bs.modal', function () {
+            $(this).remove();
+        });
+    }
+</script>
 {% endblock content %}

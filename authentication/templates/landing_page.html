@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %} 
+{% load static %}
 
 {% block content %}
 <!DOCTYPE html>
@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>Landing</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <style>
@@ -15,25 +15,56 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            text-align: center;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: start;
             min-height: 100vh;
             background: #0C0C0C;
             color: #8f8f8f;
             background-image: linear-gradient(#9B3922, #F2613F);
         }
-        
+
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 0 ;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
         .content {
             text-align: center;
-            margin-top: -50px;
             color: black;
             background-color: white;
             border: 2px solid black;
             border-radius: 10px;
             padding: 20px;
+            margin-top: 60px; /* Adjust to avoid overlap with navbar */
         }
+
         .title {
             font-size: 36px;
             color: #0C0C0C;
@@ -41,11 +72,13 @@
             font-weight: 700;
             letter-spacing: 0.1em;
         }
+
         .separator {
             border-top: 2px solid black;
             margin: 10px auto;
             width: 50px;
         }
+
         .subtitle {
             font-size: 24px;
             color: #0C0C0C;
@@ -53,6 +86,7 @@
             font-weight: 700;
             letter-spacing: 0.1em;
         }
+
         .button {
             display: inline-block;
             padding: 10px 20px;
@@ -66,10 +100,12 @@
             font-size: 0.9em;
             font-weight: 600;
         }
+
         .button:hover {
             background-color: #ddd;
             color: black;
         }
+
         .logo-container {
             position: absolute;
             top: 20px;
@@ -77,6 +113,7 @@
             display: flex;
             align-items: center;
         }
+
         .logo-item {
             margin-right: 5px;
             width: 25px;
@@ -84,18 +121,23 @@
         }
     </style>
 </head>
+
 <body>
-    <div class="content">
-        <div class="title">Pacilflix</div>
-        <div class="separator"></div>
-        <div class="subtitle">A10</div>
-        <div>
-            <a href="{% url 'authentication:login' %}">
-                <button class="button">Login</button>
-            </a>
-            <a href="{% url 'authentication:register' %}">
-                <button class="button">Register</button>
-            </a>
+    {% include 'navbar_guest.html' %}
+    
+    <div style="position: relative;display: flex; align-items: center; justify-content: center; height: 100%;">
+        <div class="content">
+            <div class="title">Pacilflix</div>
+            <div class="separator"></div>
+            <div class="subtitle">A10</div>
+            <div>
+                <a href="{% url 'authentication:login' %}">
+                    <button class="button">Login</button>
+                </a>
+                <a href="{% url 'authentication:register' %}">
+                    <button class="button">Register</button>
+                </a>
+            </div>
         </div>
     </div>
 </body>
