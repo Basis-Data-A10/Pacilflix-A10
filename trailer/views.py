@@ -88,3 +88,13 @@ def show_hasil_pencarian_trailer(request, value):
                "searchvalue": value}
 
     return render(request, 'hasil_search_trailer.html', context)
+
+def check_string_valid(string):
+    new_string = ''
+    for char in string:
+        if char == "'":
+            new_string += "''"
+        elif char == "\\":
+            new_string += "\\\\"
+        else:
+            new_string += char
