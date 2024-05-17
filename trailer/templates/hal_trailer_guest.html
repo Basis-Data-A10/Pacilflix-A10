@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tayangan</title>
+    <title>Trailer Guest</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -24,7 +24,10 @@
         .container {
             margin-top: 50px;
         }
-
+        .card {
+            background-color: #9fa8c5;
+            margin-bottom: 20px;
+        }
         .search-bar {
             margin-bottom: 20px;
         }
@@ -41,7 +44,16 @@
         h1, h2 {
             color: white;
         }
-
+        .title {
+            background-color: #fff;
+            color: #54362d;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
         .search-input {
             width: 50%;
             padding: 10px;
@@ -80,16 +92,8 @@
 {% include 'navbar.html' %}
 
 <div class="container">
-    <h1 class="text-center mb-4">Tayangan</h1>
-
-    <div class="input-group mb-3 search-bar">
-        <input id="searchBar" type="text" class="form-control search-input" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-            <button id="search" class="btn search-button" type="button">Search</button>
-        </div>
-    </div>
-
-    <h2 class="mb-3">Top 10 Global Watchlist</h2>
+    <h1 class="text-center mb-4">Halaman Trailer</h1>
+    <h2 class="text-center mb-4">Top 10 Tayangan</h2>
     <table>
         <thead>
         <tr>
@@ -99,7 +103,6 @@
             <th>URL Trailer</th>
             <th>Tanggal Rilis Trailer</th>
             <th>Total View (7 Hari Terakhir)</th>
-            <th>Tayangan</th>
         </tr>
         </thead>
         <tbody>
@@ -111,11 +114,11 @@
             <td><a href="{{ item.url_video_trailer }}">Lihat trailer</a></td>
             <td>{{ item.release_date_trailer }}</td>
             <td>{{ item.total_view }}</td>
-            <td><a href="{% url 'tayangan:'|add:item.tipe_tayangan item.id %}">Lihat tayangan</a></td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+
 
     <h2 class="mt-5 mb-3">Film</h2>
     <table>
@@ -126,7 +129,7 @@
             <th>Trailer</th>
             <th>URL Trailer</th>
             <th>Tanggal Rilis</th>
-            <th>Tayangan</th>
+
         </tr>
         </thead>
         <tbody>
@@ -137,7 +140,7 @@
             <td><a href="{{ film.url_video_trailer }}">Lihat trailer</a></td>
             <td>{{ film.url_video_trailer }}</td>
             <td>{{ film.release_date_trailer }}</td>
-            <td><a href="{% url 'tayangan:film' film.id %}">Lihat tayangan</a></td>
+
         </tr>
         {% endfor %}
         </tbody>
@@ -152,7 +155,7 @@
             <th>Trailer</th>
             <th>URL Trailer</th>
             <th>Tanggal Rilis</th>
-            <th>Tayangan</th>
+
         </tr>
         </thead>
         <tbody>
@@ -163,7 +166,7 @@
             <td><a href="{{ series.url_video_trailer }}">Lihat trailer</a></td>
             <td>{{ series.url_video_trailer }}</td>
             <td>{{ series.release_date_trailer }}</td>
-            <td><a href="{% url 'tayangan:series' series.id %}">Lihat tayangan</a></td>
+
         </tr>
         {% endfor %}
         </tbody>
