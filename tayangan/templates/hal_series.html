@@ -90,8 +90,17 @@
     </div>
 
     <div class="section">
-        <button class="button">Unduh Tayangan</button>
-        <button class="button">Favorit Tayangan</button>
+        <form method="POST" action="{% url 'insert_unduhan' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id_tayangan" value="{{ id_tayangan }}">
+            <button class="button" type="submit">Unduh Tayangan</button>
+        </form>
+
+        <form method="POST" action="{% url 'insert_favorit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id_tayangan" value="{{ id_tayangan }}">
+            <button class="button" type="submit">Favorit Tayangan</button>
+        </form>
         <button class="button">Ulasan</button>
     </div>
 </div>

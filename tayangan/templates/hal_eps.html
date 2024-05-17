@@ -98,7 +98,15 @@
         <p><strong>URL Episode:</strong> <a href="{{ episode.url_video }}">Watch Episode</a></p>
         <!-- Tombol Tonton hanya ditampilkan jika episode sudah dirilis -->
         {% if episode.release_date <= 'today'|date:"Y-m-d" %}
-        <button class="button">Tonton</button>
+        <form method="POST" action="{% url 'add_tonton' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ episode.id }}">
+            <input type="hidden" name="tipe" value="episode">
+            <label for="progress">Progress Tontonan (0-100):</label>
+            <input type="number" id="progress" name="progress" min="0" max="100" required>
+            <input type="hidden" name="durasi" value="{{ episode.durasi }}">
+            <button class="button" type="submit">Tonton</button>
+        </form>
         {% endif %}
     </div>
     {% else %}

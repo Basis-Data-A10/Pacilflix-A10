@@ -78,7 +78,6 @@
 <div class="container">
     <div class="section">
         <h1>{{ film_details.judul }}</h1>
-        <input type="range" class="form-range" min="0" max="100" id="watchrange">
         <p>{{ film_details.sinopsis }}</p>
         <p>Tanggal Rilis: {{ film_details.release_date_film }}</p>
         <p>Genre:
@@ -102,129 +101,32 @@
     </div>
     <div class="section">
         {% if film_details.is_released %}
-        <button class="button">
-            <a href="{{ film_details.url_video_film }}" style="color: inherit; text-decoration: none;">Tonton</a>
-        </button>
+        <form method="POST" action="{% url 'add_tonton' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ film_details.id_tayangan }}">
+            <input type="hidden" name="tipe" value="film">
+            <label for="progress">Progress Tontonan (0-100):</label>
+            <input type="number" id="progress" name="progress" min="0" max="100" required>
+            <input type="hidden" name="durasi" value="{{ film_details.durasi_film }}">
+            <button class="button" type="submit">Tonton</button>
+        </form>
         {% endif %}
-        <button class="button" onclick="downloadTayangan('{{ film_details.id_tayangan }}')" data-bs-toggle="modal" data-bs-target="#downloadModal">Unduh Tayangan</button>
-        <button class="button" onclick="loadModalFavorit()">Favorit Tayangan</button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="downloadModalLabel">Sukses Menambahkan Tayangan ke Daftar Unduhan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="modalBody">
-                        <!-- Text will be inserted here by JavaScript -->
-                    </div>
-                    <a type="button" class="btn btn-primary" href="{% url 'tayangan:go_to_unduhan' %}">Menuju Daftar Unduhan</a>
-                </div>
-            </div>
+        <form method="POST" action="{% url 'insert_unduhan' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id_tayangan" value="{{ film_details.id_tayangan }}">
+            <button class="button" type="submit">Unduh Tayangan</button>
+        </form>
+
+        <form method="POST" action="{% url 'insert_favorit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id_tayangan" value="{{ film_details.id_tayangan }}">
+            <button class="button" type="submit">Favorit Tayangan</button>
+        </form>
+
+        <div class="film-reviews">
+            <a href="{% url 'ulasan' film_details.id_tayangan %}" class="button">Ulasan</a>
         </div>
-
-        <button type="button" class="favorite" onclick="loadModalFavorit()">
-            Favorit
-        </button>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    </div>
-    <div class="film-reviews">
-        <a type="button" href="{% url 'tayangan:open_ulasan' film_details.id_tayangan %}">Ulasan</button>
-        </a>
     </div>
 </div>
-</body>
-
-<!-- Load jQuery first -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<!-- Then Popper.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<!-- Then Bootstrap's JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-<script>
-    function downloadTayangan(idTayangan) {
-        fetch("{% url 'tayangan:insert_unduhan' %}?id_tayangan=" + idTayangan, {
-            method: 'GET',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const dateToday = new Date();
-        const dateInSevenDays = new Date(dateToday);
-        dateInSevenDays.setDate(dateToday.getDate() + 7);
-
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const formattedToday = dateToday.toLocaleDateString('id-ID', options);
-        const formattedSevenDays = dateInSevenDays.toLocaleDateString('id-ID', options);
-
-        const modalBodyText = `Selamat! Anda telah berhasil mengunduh {{ film_details.judul }} dan akan berlaku hingga ${formattedSevenDays}. Cek informasi selengkapnya pada halaman daftar unduhan.`;
-        document.getElementById('modalBody').textContent = modalBodyText;
-    });
-
-    function loadModalFavorit() {
-        fetch('/tayangan/list_favorit/')
-            .then(response => response.json())
-            .then(data => {
-                createModal(data.dropdown_options, data.id_tayangan);
-            });
-    }
-
-    function createModal(options, id_tayangan) {
-        // Create modal structure
-        let modal = document.createElement('div');
-        modal.classList.add('modal', 'fade');
-        modal.id = 'dynamicModal';
-        modal.innerHTML = `
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="favoriteModalLabel">Tambah ke Daftar Favorit</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="favoriteListDropdown" class="form-label">Judul Daftar Favorit:</label>
-                                <select class="form-control" id="dropdown">
-                                    ${options.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
-                                </select>
-                            </div>
-                            <a type="button" class="btn btn-primary" id="addFavorite"">Tambah</a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // Append modal to body
-        document.body.appendChild(modal);
-
-        // Show the modal
-        $('#dynamicModal').modal('show');
-
-        document.getElementById('addFavorite').addEventListener('click', function() {
-            var dropdownValue = document.getElementById('dropdown').value;
-            var redirectUrl = `{% url 'tayangan:insert_favorit' %}?id_tayangan={{ film_details.id_tayangan }}&timestamp=${dropdownValue}`;
-            window.location.href = redirectUrl;
-        });
-
-        // Remove the modal from DOM after it's hidden
-        $('#dynamicModal').on('hidden.bs.modal', function () {
-            $(this).remove();
-        });
-    }
-</script>
-{% endblock content %}
+{% endblock %}
