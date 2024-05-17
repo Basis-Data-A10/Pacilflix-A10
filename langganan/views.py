@@ -79,7 +79,7 @@ def daftar_kontributor(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'daftarkontributor.html', {
+    return render(request, 'daftar_kontributor.html', {
         'page_obj': page_obj,
         'tipe_filter': tipe_filter,
     })
