@@ -9,7 +9,7 @@ def show_favorite(request):
     if not request.user.is_authenticated:
         print("User is not authenticated")
     
-    username = request.session.get('username')
+    username = request.COOKIES.get('username')
     print("Username from session: ", username)
 
     if username is None:
@@ -35,7 +35,7 @@ def delete_favorite(request, favorite_timestamp):
     if not request.user.is_authenticated:
         print("User is not authenticated from delete_favorite")
     
-    username = request.session.get('username')
+    username = request.COOKIES.get('username')
     
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -49,7 +49,7 @@ def show_favorite_detail(request, favorite_timestamp):
     if not request.user.is_authenticated:
         print("User is not authenticated from show_favorite_detail")
     
-    username = request.session.get('username')
+    username = request.COOKIES.get('username')
     
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -74,7 +74,7 @@ def delete_favorite_film(request, favorite_timestamp, film_id):
     if not request.user.is_authenticated:
         print("User is not authenticated from delete_favorite_film")
     
-    username = request.session.get('username')
+    username = request.COOKIES.get('username')
     
     try:
         uuid_obj = UUID(str(film_id), version=4) # Ensure the ID is a valid UUID
