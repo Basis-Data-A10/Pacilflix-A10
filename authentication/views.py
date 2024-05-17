@@ -18,6 +18,7 @@ def register(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         negara_asal = request.POST.get("negara_asal")
+        
         response = query_register(username, password, negara_asal, request)
         return response
 
