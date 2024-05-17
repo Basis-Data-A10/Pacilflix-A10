@@ -70,14 +70,6 @@
             width: 50px;
         }
 
-        .subtitle {
-            font-size: 24px;
-            color: #0C0C0C;
-            margin-bottom: 20px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-        }
-
         .button {
             display: inline-block;
             padding: 10px 20px;
@@ -122,34 +114,42 @@
         tbody tr:nth-child(even) {
             background-color: #eee;
         }
+
+        .empty-message {
+            font-size: 18px;
+            color: #0C0C0C;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     {% include 'navbar.html' %}
     <div class="container">
         <div class="content">
-            <div class="title">Daftar Favorit</div>
+            <div class="title">Detail Daftar Favorit</div>
             <div class="separator"></div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Judul</th>
-                        <th>Waktu Ditambah</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for favorit in daftar_favorit %}
-                    <tr>
-                        <td><a href="{% url 'daftar_favorit:show_favorite_detail' favorit.0 %}">{{ favorit.2 }}</a></td>
-                        <td>{{ favorit.0|date:"d-m-Y H:i:s" }}</td>
-                        <td>
-                            <a href="{% url 'daftar_favorit:delete_favorite' favorit.0 %}" class="button">Hapus</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% if favorite_detail %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Judul Tayangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detail in favorite_detail %}
+                        <tr>
+                            <td>{{ detail.0 }}</td>
+                            <td>
+                                <a href="{% url 'daftar_favorit:delete_favorite_film' detail.1 detail.2 %}" class="button">Hapus</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-message">Daftar favorit ini kosong.</div>
+            {% endif %}
         </div>
     </div>
 </body>
