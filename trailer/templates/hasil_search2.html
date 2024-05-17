@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% include 'navbar_guest.html' %}
 <style>
     html, body {
         height: 100%; /* Mengatur tinggi html dan body */
@@ -38,7 +39,7 @@
     }
 
     .table-custom th {
-        background-color: #4CAF50;
+        background-color: rgba(23, 9, 9, 0.809);
         color: white;
         font-weight: 700;
     }
@@ -61,7 +62,7 @@
     .search-button {
         padding: 10px 20px;
         border-radius: 5px;
-        background-color: #4CAF50;
+        background-color: rgba(0,0,0,0.1);
         color: white;
         border: none;
         cursor: pointer;

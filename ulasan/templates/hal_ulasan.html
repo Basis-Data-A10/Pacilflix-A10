@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% include 'navbar.html' %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -16,15 +17,15 @@
     }
 
     .card-header {
-        background-color: #54362d; /* Bootstrap danger color */
+        background-color: #1f1111da; /* Bootstrap danger color */
     }
     .card {
-        box-shadow: 4px 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 4px 4px 8px rgba(20, 9, 9, 0.854);
         transition: all 0.2s ease-in-out;
     }
     .card:hover {
         transform: scale(1.03);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.628);
     }
     .btn-primary {
         background-color: #54362d;
@@ -41,7 +42,7 @@
         font-weight: bold; /* Make the text bolder */
         padding: 10px;
         border-radius: 10px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.807);
         margin-bottom: 20px;
         display: inline-block;
     }
