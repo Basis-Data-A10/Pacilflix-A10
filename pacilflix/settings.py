@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +44,8 @@ INSTALLED_APPS = [
     'trailer',
     'ulasan',
     'langganan',
+    'daftar_favorit',
+    'daftar_unduhan',
 ]
 
 MIDDLEWARE = [
@@ -91,7 +92,6 @@ DATABASES = {
         'PORT': os.getenv('DATABASE_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
