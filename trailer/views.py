@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.db import connection
 from datetime import datetime, timedelta
+from django.core.paginator import Paginator
+from django.http import *
 
+import random
+import urllib.parse
+from django.shortcuts import render, redirect
+
+from datetime import *
 
 def execute_query(query):
     with connection.cursor() as cursor:
@@ -78,15 +85,41 @@ def trailer_guest(request):
     return render(request, 'hal_trailer_guest.html', context)
 
 
-def show_hasil_pencarian_trailer(request, value):
+def show_hasil_pencarian_trailer(request):
+    value = request.GET.get('value', '')
     checked_value = check_string_valid(value)
-    tayangan = query_result(f"""SELECT judul, sinopsis_trailer, url_video_trailer, release_date_trailer
-                                FROM "TAYANGAN"
-                                WHERE judul ILIKE '%{checked_value}%';""")
+    page_number = request.GET.get('page', 1)  # Get current page number, default to 1
 
-    context = {"tayangan": tayangan,
-               "searchvalue": value}
+    with connection.cursor() as cursor:
+        query = """
+            SELECT id, judul, sinopsis_trailer, url_video_trailer, release_date_trailer
+            FROM TAYANGAN
+            WHERE judul ILIKE %s
+        """
+        cursor.execute(query, [f"%{checked_value}%"])
+        tayangan = cursor.fetchall()
 
+    # Check the results in the console for debugging
+    print(f"Tayangan: {tayangan}")
+
+    # Prepare the results for pagination
+    formatted_tayangan = [
+        {
+            'id': item[0],
+            'judul': item[1],
+            'sinopsis_trailer': item[2],
+            'url_video_trailer': item[3],
+            'release_date_trailer': item[4]
+        }
+        for item in tayangan
+    ]
+    paginator = Paginator(formatted_tayangan, 10)  # 10 items per page
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+        'searchvalue': value,
+    }
     return render(request, 'hasil_search_trailer.html', context)
 
 def check_string_valid(string):
