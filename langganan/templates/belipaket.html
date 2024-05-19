@@ -14,65 +14,67 @@
             margin: 0;
             padding: 0;
             background: #0C0C0C;
-            color: #fff;
+            color: #8f8f8f;
+            background-image: linear-gradient(#9B3922, #F2613F);
         }
 
         .content {
             text-align: center;
             margin-top: 20px;
-            color: #fff;
+            color: black;
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
             padding: 20px;
             margin: 0 auto;
         }
 
         .title {
             font-size: 36px;
+            color: #0C0C0C;
             margin-bottom: 20px;
-            color: #fff;
+            font-weight: 700;
+            letter-spacing: 0.1em;
         }
 
         .separator {
-            border-top: 2px solid #fff;
+            border-top: 2px solid black;
             margin: 10px auto 20px;
             width: 50px;
         }
 
         .container {
-            background-color: #333;
+            background-color: white;
+            border: 2px solid black;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            text-align: left;
-            overflow-x: auto;
+            overflow: hidden;
         }
 
         .button {
             display: inline-block;
             padding: 10px 20px;
             margin: 10px;
-            background-color: #e50914;
-            color: #fff;
+            background-color: #333;
+            color: white;
             text-decoration: none;
             border-radius: 5px;
             font-weight: 700;
-            text-transform: uppercase;
+            letter-spacing: 0.1em;
             transition: background-color 0.3s;
             cursor: pointer;
         }
 
         .button:hover {
-            background-color: #ff121e;
+            background-color: #555;
         }
 
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: 700;
-            color: #fff;
+            color: #0C0C0C;
         }
 
         select, input[type="text"] {
@@ -81,8 +83,8 @@
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #444;
-            color: #fff;
+            background-color: #f9f9f9;
+            color: #0C0C0C;
         }
 
         .form-group {
@@ -99,24 +101,24 @@
         }
 
         th, td {
-            padding: 12px;
+            padding: 10px;
             border-bottom: 1px solid #ddd;
             text-align: left;
-            color: #fff;
         }
 
         th {
-            background-color: #e50914;
+            background-color: #333;
+            color: white;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
         tr:nth-child(odd) {
-            background-color: #333;
+            background-color: #f9f9f9;
         }
 
         tr:nth-child(even) {
-            background-color: #444;
+            background-color: #fff;
         }
 
         @media screen and (max-width: 600px) {
@@ -130,20 +132,24 @@
     <div class="separator"></div>
 
     <div class="container">
-        <h2>Detail Paket</h2>
+        <h2 class="subtitle">Detail Paket</h2>
         <table>
-            <tr>
-                <th>Nama Paket</th>
-                <th>Harga</th>
-                <th>Resolusi Layar</th>
-                <th>Dukungan Perangkat</th>
-            </tr>
-            <tr>
-                <td>{{ package.0 }}</td>
-                <td>Rp. {{ package.1 }}/bulan</td>
-                <td>{{ package.2 }}</td>
-                <td>{{ package.3 }}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Nama Paket</th>
+                    <th>Harga</th>
+                    <th>Resolusi Layar</th>
+                    <th>Dukungan Perangkat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ package.0 }}</td>
+                    <td>Rp. {{ package.1 }}/bulan</td>
+                    <td>{{ package.2 }}</td>
+                    <td>{{ package.3 }}</td>
+                </tr>
+            </tbody>
         </table>
         
         <form method="post">

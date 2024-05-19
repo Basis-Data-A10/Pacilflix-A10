@@ -15,15 +15,32 @@ def beli_paket(request):
         end_date_time = start_date_time + timedelta(days=30)
 
         with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO transaction (username, start_date_time, end_date_time, nama_paket, metode_pembayaran, timestamp_pembayaran)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                ON CONFLICT (username, start_date_time) DO UPDATE
-                SET end_date_time = %s, nama_paket = %s, metode_pembayaran = %s, timestamp_pembayaran = %s
-            """, [username, timestamp_pembayaran, end_date_time, nama_paket, metode_pembayaran, datetime.now(), end_date_time, nama_paket, metode_pembayaran, datetime.now()])
+            try:
+                cursor.execute("""
+                    SELECT 1
+                    FROM TRANSACTION
+                    WHERE username = %s
+                      AND CURRENT_DATE BETWEEN start_date_time AND end_date_time
+                """, [username])
+                if cursor.fetchone():
+                    cursor.execute("""
+                        DELETE FROM TRANSACTION
+                        WHERE username = %s
+                          AND CURRENT_DATE BETWEEN start_date_time AND end_date_time
+                    """, [username])
+
+                cursor.execute("""
+                    INSERT INTO TRANSACTION (username, start_date_time, end_date_time, nama_paket, metode_pembayaran, timestamp_pembayaran)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """, [username, start_date_time, end_date_time, nama_paket, metode_pembayaran, timestamp_pembayaran])
+
+                connection.commit()
+            except Exception as e:
+                connection.rollback()
+                raise e
 
         return redirect('langganan:langganan')
-    
+
     nama_paket = request.GET.get('nama_paket')
     if not nama_paket:
         return redirect('langganan:langganan')
