@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% include 'navbar.html' %}
+{% include 'navbar_guest.html' %}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
@@ -62,17 +62,20 @@
         padding: 10px;
         text-align: left;
     }
+
 </style>
 
 <div class="container mt-5">
-    <h1 class="title">HASIL PENCARIAN</h1>
+    <h1 class="title">Hasil Pencarian untuk "{{ searchvalue }}"</h1>
 
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Judul tayangan" aria-label="Judul tayangan" id="searchBar">
-        <button class="btn btn-primary" type="button" id="search">Search</button>
-    </div>
+    <form action="{% url 'trailer:search_trailer' %}" method="get" class="input-group mb-3 search-bar">
+        <input id="searchBar" name="value" type="text" class="form-control search-input" placeholder="Search..." value="{{ searchvalue }}">
+        <div class="input-group-append">
+            <button class="btn search-button" type="submit">Search</button>
+        </div>
+    </form>
 
-    {% if tayangan %}
+    {% if page_obje %}
     <table class="table">
         <thead>
         <tr>
@@ -80,23 +83,15 @@
             <th scope="col">Sinopsis Trailer</th>
             <th scope="col">URL Trailer</th>
             <th scope="col">Tanggal Rilis Trailer</th>
-            <th scope="col">Tayangan</th>
         </tr>
         </thead>
         <tbody>
-        {% for item in tayangan %}
+        {% for item in page_obje.object_list %}
         <tr>
             <td>{{ item.judul }}</td>
             <td>{{ item.sinopsis_trailer }}</td>
-            <td>{{ item.url_video_trailer }}</td>
+            <td><a href="{{ item.url_video_trailer }}">Lihat trailer</a></td>
             <td>{{ item.release_date_trailer }}</td>
-            <td>
-                {% if paket.is_valid == 1 %}
-                <a href="/tayangan/film/{{ item.id }}" class="text-white hover:text-gray-300 me-2">
-                    <button type="button" class="btn btn-primary mb-2">Tombol ke Tayangan</button>
-                </a>
-                {% endif %}
-            </td>
         </tr>
         {% endfor %}
         </tbody>
@@ -105,14 +100,4 @@
     <div class="empty">Tidak ditemukan tayangan yang sesuai</div>
     {% endif %}
 </div>
-
-<script>
-    document.getElementById('search').addEventListener('click', function() {
-        const searchValue = document.getElementById('searchBar').value;
-        const encodedValue = encodeURIComponent(searchValue).replace(/'/g, "%27");
-        const searchUrl = `hasil-pencarian-tayangan/${encodedValue}/`;
-        window.location.href = ''; // Mengosongkan URL yang ada
-        window.location.href = searchUrl; // Menetapkan URL baru
-    });
-</script>
 {% endblock content %}

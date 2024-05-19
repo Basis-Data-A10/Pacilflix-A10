@@ -4,10 +4,9 @@ import urllib.parse
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.http import HttpResponse
-from datetime import datetime, timedelta
-
+from django.http import *
+from datetime import *
+from django.core.paginator import Paginator
 
 
 def execute_query(query):
@@ -19,40 +18,7 @@ def execute_query(query):
             for row in cursor.fetchall()
         ]
 
-def episode(request, series_id, episode_number):
-    episode_number = int(episode_number)
-    with connection.cursor() as cursor:
-        # Mendapatkan judul tayangan
-        cursor.execute("SELECT judul FROM TAYANGAN WHERE id = %s", [series_id])
-        series_title = cursor.fetchone()
-
-        # Mendapatkan semua episode untuk id_series tertentu
-        cursor.execute("SELECT * FROM EPISODE WHERE id_series = %s", [series_id])
-        episodes = cursor.fetchall()
-        episodes_num = [(i, *episode) for i, episode in enumerate(episodes)]
-
-        # Memilih episode berdasarkan episode_number
-        if 0 <= episode_number < len(episodes):
-            episode = episodes[episode_number]
-            episode_details = {
-                'id': episode[0],
-                'sub_judul': episode[1],
-                'sinopsis': episode[2],
-                'durasi': episode[3],
-                'url_video': episode[4],
-                'release_date': episode[5],
-            }
-        else:
-            episode_details = None
-
-    context = {
-        'episodes': episodes_num,
-        'episode': episode_details,
-        'series_title': series_title[0] if series_title else None,  # Ensure series_title is not None before accessing the title
-    }
-    return render(request, 'hal_eps.html', context)
-
-
+#Fungsi untuk mengurus halaman film, akan mereturn html film
 def film(request, film_id):
     with connection.cursor() as cursor:
         cursor.execute(
@@ -134,6 +100,7 @@ def film(request, film_id):
 
     return render(request, 'hal_film.html', {'film_details': film_details})
 
+#Fungsi untuk mengurus halaman series, akan mereturn html series
 def series(request, series_id):
     with connection.cursor() as cursor:
         cursor.execute(
@@ -212,9 +179,42 @@ def series(request, series_id):
             # For example, return an error page or redirect to another page
             return HttpResponse("Series not found", status=404)
 
+def episode(request, series_id, episode_number):
+    episode_number = int(episode_number)
+    with connection.cursor() as cursor:
+        # Mendapatkan judul tayangan
+        cursor.execute("SELECT judul FROM TAYANGAN WHERE id = %s", [series_id])
+        series_title = cursor.fetchone()
+
+        # Mendapatkan semua episode untuk id_series tertentu
+        cursor.execute("SELECT * FROM EPISODE WHERE id_series = %s", [series_id])
+        episodes = cursor.fetchall()
+        episodes_num = [(i, *episode) for i, episode in enumerate(episodes)]
+
+
+        # Memilih episode berdasarkan episode_number
+        if 0 <= episode_number < len(episodes):
+            episode = episodes[episode_number]
+            episode_details = {
+                'id_series': episode[0],
+                'sub_judul': episode[1],
+                'sinopsis': episode[2],
+                'durasi': episode[3],
+                'url_video': episode[4],
+                'release_date': episode[5],
+                'is_released': episode[5] <= datetime.now().date(),}
+
+        else:
+            episode_details = None
+
+    context = {
+        'episodes': episodes_num,
+        'episode': episode_details,
+        'series_title': series_title[0] if series_title else None,  # Ensure series_title is not None before accessing the title
+    }
+    return render(request, 'hal_eps.html', context)
+
 def tayangan(request):
-#     if 'username' not in request.session or 'username' not in request.COOKIES:
-#         return redirect('authentication:show_landing')
 
     top_10_query = f"""
         WITH durasi_tayangan AS (
@@ -258,10 +258,18 @@ def tayangan(request):
         FROM TAYANGAN AS T
         JOIN SERIES AS S ON S.id_tayangan = T.id;
     """
+    paket = execute_query(f"""SELECT
+                                CASE
+                                    WHEN MAX(end_date_time) > CURRENT_DATE THEN 1
+                                    ELSE 0
+                                END AS is_valid
+                            FROM TRANSACTION
+                            WHERE username = '{request.COOKIES.get('username')}';""")
 
     top_10 = execute_query(top_10_query)
     film = execute_query(film_query)
     series = execute_query(series_query)
+
 
     # Menambahkan peringkat
     rank = 1
@@ -273,82 +281,164 @@ def tayangan(request):
         "film": film,
         "series": series,
         "top_10": top_10,
+        "paket": paket[0],
     }
 
     return render(request, 'daftar_tayangan.html', context)
 
-
-def show_hasil_pencarian_tayangan(request, value):
+#Fungsi Search untuk suatu tayangan berdasarkan judul, akan mereturn ke halaman hasil search
+def show_hasil_pencarian_tayangan(request):
+    value = request.GET.get('value', '')
     checked_value = check_string_valid(value)
-    tayangan = execute_query(f"""SELECT id, judul, sinopsis_trailer, url_video_trailer, release_date_trailer
-                                FROM TAYANGAN
-                                WHERE LOWER(judul) LIKE LOWER('%{checked_value}%');""")
+    page_number = request.GET.get('page', 1)  # Get current page number, default to 1
 
-    paket = execute_query(f"""SELECT
-                                 CASE
-                                     WHEN MAX(end_date_time) > CURRENT_DATE THEN 1
-                                     ELSE 0
-                                 END AS is_valid
-                             FROM TRANSACTION
-                             WHERE username = '{request.COOKIES.get('username')}';""")
+    with connection.cursor() as cursor:
+        query = """
+            SELECT id, judul, sinopsis_trailer, url_video_trailer, release_date_trailer
+            FROM TAYANGAN
+            WHERE judul ILIKE %s
+        """
+        cursor.execute(query, [f"%{checked_value}%"])
+        tayangan = cursor.fetchall()
 
-    context = {"tayangan": tayangan,
-               "searchvalue": value,
-               "paket": paket[0]}
+    # Check the results in the console for debugging
+    print(f"Tayangan: {tayangan}")
+
+    # Prepare the results for pagination
+    formatted_tayangan = [
+        {
+            'id': item[0],
+            'judul': item[1],
+            'sinopsis_trailer': item[2],
+            'url_video_trailer': item[3],
+            'release_date_trailer': item[4]
+        }
+        for item in tayangan
+    ]
+
+    paginator = Paginator(formatted_tayangan, 10)  # 10 items per page
+    page_obj = paginator.get_page(page_number)
+
+    # Get package information
+    paket = execute_query(f"""
+        SELECT CASE
+                   WHEN MAX(end_date_time) > CURRENT_DATE THEN 1
+                   ELSE 0
+               END AS is_valid
+        FROM TRANSACTION
+        WHERE username = '{request.COOKIES.get('username')}';
+    """)
+
+    context = {
+        'page_obj': page_obj,
+        'searchvalue': value,
+        'paket': paket[0] if paket else None
+    }
 
     return render(request, 'hasil_search.html', context)
 
+def add_tonton(request):
+    # Cek apakah pengguna sudah login
+    if 'username' not in request.session or 'username' not in request.COOKIES:
+        return redirect('authentication:show_landing')
 
-def insert_unduhan(request):
+    # Jika request metode adalah POST
+    if request.method == "POST":
+        # Ambil data dari request
+        username = request.COOKIES.get('username')
+        id_tayangan = request.POST['id_tayangan']
+        tipe = request.POST['tipe']
+        progress = int(request.POST['progress'])
+        durasi = int(request.POST['durasi'])
+
+        # Hitung progress dalam durasi menit
+        progress = int((progress / 100) * durasi)
+
+        cursor = connection.cursor()
+        try:
+            # Masukkan data nonton ke dalam database
+            cursor.execute(f"""
+                INSERT INTO RIWAYAT_NONTON VALUES ('{id_tayangan}', '{username}', NOW(), NOW() + {progress} * INTERVAL '1 minute');
+            """)
+            # Beri pesan sukses
+            messages.add_message(request, messages.SUCCESS, 'Tayangan berhasil ditonton!', extra_tags='tonton')
+        except InternalError as e:
+            # Beri pesan gagal
+            messages.add_message(request, messages.ERROR, 'Tayangan gagal ditonton!', extra_tags='tonton')
+
+        # Alihkan ke halaman yang sesuai berdasarkan tipe tayangan
+        if tipe == 'series':
+            subjudul = request.POST['subjudul']
+            encoded = quote(subjudul)
+            url = f"{id_tayangan}/{encoded}/"
+            return HttpResponseRedirect(f'/tayangan/series/{url}')
+        return HttpResponseRedirect(f'/tayangan/film/{id_tayangan}')
+
+def unduh_tayangan(request, id_tayangan):
     username = request.COOKIES.get('username')
-    id_tayangan = request.GET.get('id_tayangan')
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if username:
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+                   INSERT INTO TAYANGAN_TERUNDUH VALUES ('{id_tayangan}', '{username}', '{current_time}');
+                        """)
+                # Determine redirect URL based on type
+            return HttpResponseRedirect(f'/tayangan/film/{id_tayangan}')
+#         else:
+#                 return HttpResponseBadRequest('User not authenticated')
+
+def unduh_tayangan_series(request, id_tayangan):
+    username = request.COOKIES.get('username')
+    if username:
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+                   INSERT INTO TAYANGAN_TERUNDUH VALUES ('{id_tayangan}', '{username}', '{current_time}');
+                        """)
+                # Determine redirect URL based on type
+            return HttpResponseRedirect(f'/tayangan/series/{id_tayangan}')
+#         else:
+#             return HttpResponseBadRequest('User not authenticated')
+
+def tambah_ke_daftar_favorit(request, id_tayangan, judul):
+    username = request.COOKIES.get('username')
+    with connection.cursor() as cursor:
+        cursor.execute(f"""SELECT timestamp
+                           FROM DAFTAR_FAVORIT
+                           WHERE username = '{username}' AND judul = '{judul}'
+                        """)
+        timestamp = cursor.fetchall()
+        timestamp_output = timestamp[0][0]
 
     with connection.cursor() as cursor:
-        cursor.execute(
-            f'INSERT INTO TAYANGAN_TERUNDUH VALUES (\'{id_tayangan}\', \'{username}\', \'{timestamp}\')')
-        
-    connection.commit()
-    return JsonResponse({'status': 'success'})
+        cursor.execute(f"""INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT
+                           VALUES ('{id_tayangan}', '{timestamp_output}', '{username}')
+                       """)
+            # Determine redirect URL based on type
+        return HttpResponseRedirect(f'/tayangan/film/{id_tayangan}')
 
-def go_to_unduhan(request):
-    return redirect('daftar_unduhan:daftar_unduhan')
+def daftar_favorit_series(request, id_series, judul):
+        username = request.COOKIES.get('username')
+        if username:
+            with connection.cursor() as cursor:
+                cursor.execute(f"""SELECT timestamp
+                                FROM DAFTAR_FAVORIT
+                                WHERE username = '{username}' AND judul = '{judul}'
+                                """)
+                timestamp = cursor.fetchall()
+                print(timestamp)
+                timestamp_output = timestamp[0][0]
 
-def list_favorit(request):
-    username = request.COOKIES.get('username')
-    id_tayangan = request.GET.get('id_tayangan')
-    daftar_favorit = []
+            with connection.cursor() as cursor:
+                cursor.execute(f"""INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT VALUES ('{id_series}', '{timestamp_output}', '{username}')
+                            """)
 
-    with connection.cursor() as cursor:
-        cursor.execute(
-            f'SELECT * FROM DAFTAR_FAVORIT WHERE username = \'{username}\'')
-        daftar_favorit = cursor.fetchall()
-
-    options = []
-    for record in daftar_favorit:
-        options.append({'value':record[0], 'text':record[2]})
-    
-    data = {
-        'dropdown_options':options,
-        'id_tayangan':id_tayangan
-    }
-
-    return JsonResponse(data)
-
-def insert_favorit(request):
-    username = request.COOKIES.get('username')
-    id_tayangan = request.GET.get('id_tayangan')
-    timestamp = request.GET.get('timestamp')
-
-    with connection.cursor() as cursor:
-        cursor.execute(
-            f'INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT VALUES (\'{id_tayangan}\', \'{timestamp}\', \'{username}\')')
-        
-    connection.commit()
-    return redirect('daftar_favorit:daftar_favorit')
+            return HttpResponseRedirect(f'/tayangan/series/{id_tayangan}') # Or return any other response as needed
+        else:
+            return JsonResponse({'message': 'User not authenticated'}, status=401)
 
 def open_ulasan(request, tayangan_id):
-    return redirect('ulasan:hal_ulasan', id_tayangan=tayangan_id)
+    return redirect('ulasan:ulasan', id_tayangan=tayangan_id)
 
 def check_string_valid(string):
     new_string = ''
