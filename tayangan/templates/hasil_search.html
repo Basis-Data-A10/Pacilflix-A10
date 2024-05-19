@@ -110,8 +110,7 @@
     document.getElementById('search').addEventListener('click', function() {
         const searchValue = document.getElementById('searchBar').value;
         const encodedValue = encodeURIComponent(searchValue).replace(/'/g, "%27");
-        const searchUrl = "{% url 'hasil_search' search_value %}".replace('search_value', encodedValue);
-        window.location.href = searchUrl; // Menetapkan URL baru
+        window.location.href = `hasil_search/<${encodeURIComponent(searchValue)}>`; // Menetapkan URL baru
     });
 </script>
 {% endblock content %}

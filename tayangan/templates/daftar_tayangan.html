@@ -48,7 +48,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
         }
-        .search-button {
+        .btn search-button {
             padding: 10px 20px;
             border-radius: 20px;
             background-color: white;
@@ -85,7 +85,7 @@
     <div class="input-group mb-3 search-bar">
         <input id="searchBar" type="text" class="form-control search-input" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <button id="search" class="btn search-button" type="button">Search</button>
+            <button id="search" class="btn search-button" type="button" onclick="redirectToSearch()">Search</button>
         </div>
     </div>
 
@@ -172,11 +172,12 @@
 </body>
 
 <script>
-    document.getElementById('search').addEventListener('click', function() {
-        const searchValue = document.getElementById('searchBar').value;
-        const encodedValue = encodeURIComponent(searchValue).replace(/'/g, "%27");
-        const searchUrl = "{% url 'hasil_search' search_value %}".replace('search_value', encodedValue);
-        window.location.href = searchUrl;
-    });
+    function redirectToSearch() {
+        var searchValue = document.getElementById('searchBar').value;
+
+        window.location.href = `hasil_search/<${encodeURIComponent(searchValue)}>`;
+    }
 </script>
+
+
 {% endblock content %}

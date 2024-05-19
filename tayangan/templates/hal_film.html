@@ -101,7 +101,7 @@
     </div>
     <div class="section">
         {% if film_details.is_released %}
-        <form method="POST" action="{% url 'add_tonton' %}">
+        <form method="POST" action="{% url 'tayangan:add_tonton' %}">
             {% csrf_token %}
             <input type="hidden" name="id" value="{{ film_details.id_tayangan }}">
             <input type="hidden" name="tipe" value="film">
@@ -112,20 +112,20 @@
         </form>
         {% endif %}
 
-        <form method="POST" action="{% url 'insert_unduhan' %}">
+        <form method="POST" action="{% url 'tayangan:unduh_tayangan' %}">
             {% csrf_token %}
             <input type="hidden" name="id_tayangan" value="{{ film_details.id_tayangan }}">
             <button class="button" type="submit">Unduh Tayangan</button>
         </form>
 
-        <form method="POST" action="{% url 'insert_favorit' %}">
+        <form method="POST" action="{% url 'tayangan:insert_favorit' %}">
             {% csrf_token %}
             <input type="hidden" name="id_tayangan" value="{{ film_details.id_tayangan }}">
             <button class="button" type="submit">Favorit Tayangan</button>
         </form>
 
         <div class="film-reviews">
-            <a href="{% url 'ulasan' film_details.id_tayangan %}" class="button">Ulasan</a>
+            <a href="{% url 'ulasan:ulasan' film_details.id_tayangan %}" class="button">Ulasan</a>
         </div>
     </div>
 </div>

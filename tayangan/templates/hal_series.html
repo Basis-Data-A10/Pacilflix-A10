@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
     body {
@@ -48,6 +49,7 @@
 
 </style>
 
+{% include 'navbar.html' %}
 <div class="container">
     <h1 class="mb-3">Halaman Series: {{ series_details.judul }}</h1>
     <div class="section">
@@ -90,18 +92,107 @@
     </div>
 
     <div class="section">
-        <form method="POST" action="{% url 'insert_unduhan' %}">
-            {% csrf_token %}
-            <input type="hidden" name="id_tayangan" value="{{ id_tayangan }}">
-            <button class="button" type="submit">Unduh Tayangan</button>
-        </form>
-
-        <form method="POST" action="{% url 'insert_favorit' %}">
-            {% csrf_token %}
-            <input type="hidden" name="id_tayangan" value="{{ id_tayangan }}">
-            <button class="button" type="submit">Favorit Tayangan</button>
-        </form>
-        <button class="button">Ulasan</button>
+        <a href="{% url 'tayangan:unduh_tayangan' series_details.id_tayangan %}">
+            <button type="button" class="btn btn-primary" id="btnUnduh" data-id="{{ series_details.id_tayangan }}">Unduh</button>
+        </a>
+        <button class="btn btn-primary mb-2" id="btnFavorit" data-bs-toggle="modal" data-bs-target="#favoriteListModal">Favorit Tayangan</button>
+        <a href="{% url 'ulasan:ulasan' series_details.id_tayangan %}" class="button">Ulasan</a>
     </div>
 </div>
+
+
+<div class="modal fade" id="favoriteListModal" tabindex="-1" aria-labelledby="favoriteListModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="favoriteListModalLabelTitle">TAMBAH KE DAFTAR FAVORIT MODAL</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <select class="form-select mb-3" id="dropdown-favorite">
+                    <option value="select-daftar-favorit">Judul Daftar Favorit: </option>
+                    {% for judul_daftar in list_daftar_favorit %}
+                    <option value="{{ judul_daftar }}">{{ judul_daftar }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <a id="link_add_favorite" href="">
+                    <button type="button" class="btn btn-primary" id="button_add_favorite" data-bs-dismiss="modal">Tambah</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="downloadModalLabelTitle">SUKSES MENAMBAHKAN TAYANGAN KE DAFTAR UNDUHAN</h1>
+            </div>
+            <div class="modal-body" id="downloadModalBody">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary mb-2" id="btnDaftarUnduhan">Daftar Unduhan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById("btnTonton").addEventListener("click", function () {
+            console.log("Menonton film...");
+        });
+
+        document.getElementById('btnUnduh').addEventListener('click', function(event) {
+            event.preventDefault();  // Prevent default behavior to avoid navigation
+            var idSeries = this.getAttribute('data-id');
+            var title = document.getElementById("judul").innerHTML;  // Assuming there is an element with id 'judul'
+            var url = '{% url "tayangan:unduh_tayangan" "0" %}'.replace('0', idSeries);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+
+                        var date = new Date();
+                        date.setDate(date.getDate() + 7);
+                        var message = "Selamat! Anda telah berhasil mengunduh " + title + " dan akan berlaku hingga " + date.toLocaleDateString('en-GB', { day: 'numeric', month: 'numeric', year: 'numeric' }) + ". Cek informasi selengkapnya pada halaman daftar unduhan.";
+
+                        document.getElementById('downloadModalBody').querySelector('p').textContent = message;
+                        var downloadModal = new bootstrap.Modal(document.getElementById('downloadModal'));
+                        downloadModal.show();
+                    } else {
+                        // Handle error
+                        alert('Failed to add to download list.');
+                    }
+                }
+            };
+
+            xhr.send(JSON.stringify({}));
+        });
+
+        document.getElementById('btnDaftarUnduhan').addEventListener('click', function() {
+            window.location.href = '{% url "daftar_unduhan:show_downloads" %}';
+        });
+
+    document.getElementById('dropdown-favorite').addEventListener('click', function(e) {
+            var selected_daftar = e.target.options[e.target.selectedIndex].value;
+            var judul_film = document.getElementById('judul').innerHTML;
+            var url = 'favorit-series/' + judul_film + '/' + selected_daftar + '/';
+            document.getElementById('link_add_favorite').setAttribute('href', url);
+        });
+
+    });
+</script>
 {% endblock content %}

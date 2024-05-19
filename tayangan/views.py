@@ -4,9 +4,10 @@ import urllib.parse
 from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import *
 from datetime import datetime, timedelta
+import datetime
+
 
 def execute_query(query):
     with connection.cursor() as cursor:
@@ -194,7 +195,7 @@ def episode(request, series_id, episode_number):
         if 0 <= episode_number < len(episodes):
             episode = episodes[episode_number]
             episode_details = {
-                'id': episode[0],
+                'id_series': episode[0],
                 'sub_judul': episode[1],
                 'sinopsis': episode[2],
                 'durasi': episode[3],
@@ -314,7 +315,7 @@ def add_tonton(request):
     if request.method == "POST":
         # Ambil data dari request
         username = request.COOKIES.get('username')
-        id = request.POST['id']
+        id_tayangan = request.POST['id_tayangan']
         tipe = request.POST['tipe']
         progress = int(request.POST['progress'])
         durasi = int(request.POST['durasi'])
@@ -326,7 +327,7 @@ def add_tonton(request):
         try:
             # Masukkan data nonton ke dalam database
             cursor.execute(f"""
-                INSERT INTO RIWAYAT_NONTON VALUES ('{id}', '{username}', NOW(), NOW() + {progress} * INTERVAL '1 minute');
+                INSERT INTO RIWAYAT_NONTON VALUES ('{id_tayangan}', '{username}', NOW(), NOW() + {progress} * INTERVAL '1 minute');
             """)
             # Beri pesan sukses
             messages.add_message(request, messages.SUCCESS, 'Tayangan berhasil ditonton!', extra_tags='tonton')
@@ -338,36 +339,74 @@ def add_tonton(request):
         if tipe == 'series':
             subjudul = request.POST['subjudul']
             encoded = quote(subjudul)
-            url = f"{id}/{encoded}/"
+            url = f"{id_tayangan}/{encoded}/"
             return HttpResponseRedirect(f'/tayangan/series/{url}')
-        return HttpResponseRedirect(f'/tayangan/film/{id}')
+        return HttpResponseRedirect(f'/tayangan/film/{id_tayangan}')
 
-def insert_unduhan(request):
+def unduh_tayangan(request, id_tayangan):
     username = request.COOKIES.get('username')
-    id_tayangan = request.GET.get('id_tayangan')
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    with connection.cursor() as cursor:
-        cursor.execute(
-            f'INSERT INTO TAYANGAN_TERUNDUH VALUES (\'{id_tayangan}\', \'{username}\', \'{timestamp}\')')
-        
-    connection.commit()
-    return JsonResponse({'status': 'success'})
+    if username:
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+                    INSERT INTO TAYANGAN_TERUNDUH VALUES ('{id_tayangan}', '{username}', '{current_time}');
+                """)
+            return HttpResponseRedirect(f'/tayangan/series/{id_tayangan}')
+
+    else:
+        return HttpResponseBadRequest('User not authenticated')
+
+# def insert_unduhan(request):
+#     username = request.COOKIES.get('username')
+#     id_tayangan = request.GET.get('id_tayangan')
+#     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#
+#     with connection.cursor() as cursor:
+#         cursor.execute(
+#             f'INSERT INTO TAYANGAN_TERUNDUH VALUES (\'{id_tayangan}\', \'{username}\', \'{timestamp}\')')
+#
+#     connection.commit()
+#     return JsonResponse({'status': 'success'})
 
 def go_to_unduhan(request):
     return redirect('daftar_unduhan:daftar_unduhan')
 
-def insert_favorit(request):
+def tambah_ke_daftar_favorit(request, id_tayangan, judul):
     username = request.COOKIES.get('username')
-    id_tayangan = request.GET.get('id_tayangan')
-    timestamp = request.GET.get('timestamp')
+    with connection.cursor() as cursor:
+        cursor.execute(f"""SELECT timestamp
+                           FROM DAFTAR_FAVORIT
+                           WHERE username = '{username}' AND judul = '{judul}'
+                        """)
+        timestamp = cursor.fetchall()
+        timestamp_output = timestamp[0][0]
 
     with connection.cursor() as cursor:
-        cursor.execute(
-            f'INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT VALUES (\'{id_tayangan}\', \'{timestamp}\', \'{username}\')')
-        
-    connection.commit()
-    return redirect('daftar_favorit:daftar_favorit')
+        cursor.execute(f"""INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT
+                           VALUES ('{id_tayangan}', '{timestamp_output}', '{username}')
+                       """)
+
+    return JsonResponse({'message': 'Successfully added to favorites'})
+
+def daftar_favorit_series(request, id_series, judul):
+        username = request.COOKIES.get('username')
+        if username:
+            with connection.cursor() as cursor:
+                cursor.execute(f"""SELECT timestamp
+                                FROM DAFTAR_FAVORIT
+                                WHERE username = '{username}' AND judul = '{judul}'
+                                """)
+                timestamp = cursor.fetchall()
+                print(timestamp)
+                timestamp_output = timestamp[0][0]
+
+            with connection.cursor() as cursor:
+                cursor.execute(f"""INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT VALUES ('{id_series}', '{timestamp_output}', '{username}')
+                            """)
+            return JsonResponse({'message': 'Successfully added to favorites'})  # Or return any other response as needed
+        else:
+            return JsonResponse({'message': 'User not authenticated'}, status=401)
 
 def open_ulasan(request, tayangan_id):
     return redirect('ulasan:hal_ulasan', id_tayangan=tayangan_id)
