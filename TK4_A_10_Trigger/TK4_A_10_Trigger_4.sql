@@ -31,6 +31,6 @@ END;
 $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER validate_package_activation
+CREATE OR REPLACE TRIGGER validate_package_activation
 BEFORE INSERT ON TRANSACTION
-FOR EACH ROW EXECUTE FUNCTION manage_package_update_or_insert();
+FOR EACH ROW EXECUTE FUNCTION manage_package();
