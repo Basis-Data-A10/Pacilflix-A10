@@ -12,28 +12,37 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            text-align: center;
             background: #0C0C0C;
-            color: black;
+            color: #8f8f8f;
             background-image: linear-gradient(#9B3922, #F2613F);
         }
         .content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 60px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            margin: 0 auto;
         }
 
         .page-title {
+            font-size: 36px;
+            color: #0C0C0C;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
             background-color: white;
             border: 2px solid black;
             border-radius: 10px;
             padding: 20px;
-            margin-top: 20px;
-            max-width: 800px;
-            margin-bottom: 20px;
-            color: black;
-            font-weight: bold;
+        }
+
+        .separator {
+            border-top: 2px solid black;
+            margin: 10px auto 20px;
+            width: 50px;
         }
 
         .container {
@@ -44,6 +53,7 @@
             margin-top: 20px;
             max-width: 800px;
             margin-bottom: 20px;
+            overflow: hidden;
         }
 
         .filter-form {
@@ -69,6 +79,7 @@
             width: 100%;
             margin-bottom: 20px;
             border-collapse: collapse;
+            font-size: 0.9rem;
         }
 
         th, td {
@@ -81,6 +92,8 @@
         th {
             background-color: #333;
             color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         tbody tr:nth-child(odd) {
@@ -100,7 +113,6 @@
 
         .pagination a {
             color: white;
-            float: left;
             padding: 8px 16px;
             text-decoration: none;
             transition: background-color .3s;
@@ -126,6 +138,7 @@
     </style>
 
     <h1 class="page-title">Daftar Kontributor</h1>
+    <div class="separator"></div>
     <div class="container">
         <form method="get" class="filter-form" id="filter-form">
             <label for="tipe">Filter berdasarkan Tipe: </label>
@@ -183,5 +196,4 @@
         {% endif %}
     </div>
 </div>
-
 {% endblock content %}
