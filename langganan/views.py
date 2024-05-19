@@ -18,7 +18,6 @@ def beli_paket(request):
             cursor.execute("""
                 INSERT INTO transaction (username, start_date_time, end_date_time, nama_paket, metode_pembayaran, timestamp_pembayaran)
                 VALUES (%s, %s, %s, %s, %s, %s)
-                ON CONFLICT (username, start_date_time) DO UPDATE
                 SET end_date_time = %s, nama_paket = %s, metode_pembayaran = %s, timestamp_pembayaran = %s
             """, [username, timestamp_pembayaran, end_date_time, nama_paket, metode_pembayaran, datetime.now(), end_date_time, nama_paket, metode_pembayaran, datetime.now()])
 
