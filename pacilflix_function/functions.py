@@ -8,7 +8,6 @@ from tayangan.views import *
 
 def query_register(username, password, negara_asal, request):
   cursor = connection.cursor()
-  context = {}
 
   try:
     cursor.execute("INSERT INTO PENGGUNA VALUES (%s, %s, %s)", [username, password, negara_asal])
@@ -47,4 +46,3 @@ def query_logout(response):
   response.delete_cookie('password')
   response.delete_cookie('authenticated')
   return response
-  #tes
