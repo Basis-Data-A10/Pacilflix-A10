@@ -48,7 +48,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
         }
-        .btn search-button {
+        .search-button {
             padding: 10px 20px;
             border-radius: 20px;
             background-color: white;
@@ -82,12 +82,12 @@
 <div class="container">
     <h1 class="text-center mb-4">Tayangan</h1>
 
-    <div class="input-group mb-3 search-bar">
-        <input id="searchBar" type="text" class="form-control search-input" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
+    <form action="{% url 'tayangan:hasil_search' %}" method="get" class="input-group mb-3 search-bar">
+        <input id="searchBar" name="value" type="text" class="form-control search-input" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <button id="search" class="btn search-button" type="button" onclick="redirectToSearch()">Search</button>
+            <button class="btn search-button" type="submit">Search</button>
         </div>
-    </div>
+    </form>
 
     <h2 class="mb-3">Top 10 Global Watchlist</h2>
     <table>
@@ -170,14 +170,4 @@
     </table>
 </div>
 </body>
-
-<script>
-    function redirectToSearch() {
-        var searchValue = document.getElementById('searchBar').value;
-
-        window.location.href = `hasil_search/<${encodeURIComponent(searchValue)}>`;
-    }
-</script>
-
-
 {% endblock content %}

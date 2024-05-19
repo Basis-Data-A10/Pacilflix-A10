@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 {% include 'navbar.html' %}
@@ -65,14 +66,16 @@
 </style>
 
 <div class="container mt-5">
-    <h1 class="title">HASIL PENCARIAN</h1>
+    <h1 class="title">Hasil Pencarian untuk "{{ searchvalue }}"</h1>
 
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Judul tayangan" aria-label="Judul tayangan" id="searchBar">
-        <button class="btn btn-primary" type="button" id="search">Search</button>
-    </div>
+    <form action="{% url 'tayangan:hasil_search' %}" method="get" class="input-group mb-3 search-bar">
+        <input id="searchBar" name="value" type="text" class="form-control search-input" placeholder="Search..." value="{{ searchvalue }}">
+        <div class="input-group-append">
+            <button class="btn search-button" type="submit">Search</button>
+        </div>
+    </form>
 
-    {% if tayangan %}
+    {% if page_obj %}
     <table class="table">
         <thead>
         <tr>
@@ -84,17 +87,15 @@
         </tr>
         </thead>
         <tbody>
-        {% for item in tayangan %}
+        {% for item in page_obj.object_list %}
         <tr>
             <td>{{ item.judul }}</td>
             <td>{{ item.sinopsis_trailer }}</td>
-            <td>{{ item.url_video_trailer }}</td>
+            <td><a href="{{ item.url_video_trailer }}">Lihat trailer</a></td>
             <td>{{ item.release_date_trailer }}</td>
             <td>
                 {% if paket.is_valid == 1 %}
-                <a href="/tayangan/film/{{ item.id }}" class="text-white hover:text-gray-300 me-2">
-                    <button type="button" class="btn btn-primary mb-2">Tombol ke Tayangan</button>
-                </a>
+            <td><a href="{% url 'tayangan:'|add:item.tipe_tayangan item.id %}">Lihat tayangan</a></td>
                 {% endif %}
             </td>
         </tr>
@@ -105,12 +106,4 @@
     <div class="empty">Tidak ditemukan tayangan yang sesuai</div>
     {% endif %}
 </div>
-
-<script>
-    document.getElementById('search').addEventListener('click', function() {
-        const searchValue = document.getElementById('searchBar').value;
-        const encodedValue = encodeURIComponent(searchValue).replace(/'/g, "%27");
-        window.location.href = `hasil_search/<${encodeURIComponent(searchValue)}>`; // Menetapkan URL baru
-    });
-</script>
 {% endblock content %}

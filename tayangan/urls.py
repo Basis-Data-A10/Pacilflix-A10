@@ -16,5 +16,5 @@ urlpatterns = [
     path('add_tonton/', add_tonton, name='add_tonton'),
     path('go_to_unduhan/', go_to_unduhan, name='go_to_unduhan'),
     path('ulasan/<tayangan_id>', open_ulasan, name='open_ulasan'),
-    path('hasil_search/<str:value>/', show_hasil_pencarian_tayangan, name='hasil_search'),
+    path('search/', show_hasil_pencarian_tayangan, name='hasil_search'),
 ]

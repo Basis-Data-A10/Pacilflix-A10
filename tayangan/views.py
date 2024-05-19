@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.http import *
-from datetime import datetime, timedelta
-import datetime
+from datetime import *
+from django.core.paginator import Paginator
 
 
 def execute_query(query):
@@ -285,26 +285,55 @@ def tayangan(request):
     return render(request, 'daftar_tayangan.html', context)
 
 #Fungsi Search untuk suatu tayangan berdasarkan judul, akan mereturn ke halaman hasil search
-def show_hasil_pencarian_tayangan(request, value):
+def show_hasil_pencarian_tayangan(request):
+    value = request.GET.get('value', '')
     checked_value = check_string_valid(value)
-    tayangan = execute_query(f"""SELECT id, judul, sinopsis_trailer, url_video_trailer, release_date_trailer
-                                FROM TAYANGAN
-                                WHERE LOWER(judul) LIKE LOWER('%{checked_value}%');""")
+    page_number = request.GET.get('page', 1)  # Get current page number, default to 1
 
-    paket = execute_query(f"""SELECT
-                                 CASE
-                                     WHEN MAX(end_date_time) > CURRENT_DATE THEN 1
-                                     ELSE 0
-                                 END AS is_valid
-                             FROM TRANSACTION
-                             WHERE username = '{request.COOKIES.get('username')}';""")
+    with connection.cursor() as cursor:
+        query = """
+            SELECT id, judul, sinopsis_trailer, url_video_trailer, release_date_trailer
+            FROM TAYANGAN
+            WHERE judul ILIKE %s
+        """
+        cursor.execute(query, [f"%{checked_value}%"])
+        tayangan = cursor.fetchall()
 
-    context = {"tayangan": tayangan,
-               "searchvalue": value,
-               "paket": paket[0]}
+    # Check the results in the console for debugging
+    print(f"Tayangan: {tayangan}")
+
+    # Prepare the results for pagination
+    formatted_tayangan = [
+        {
+            'id': item[0],
+            'judul': item[1],
+            'sinopsis_trailer': item[2],
+            'url_video_trailer': item[3],
+            'release_date_trailer': item[4]
+        }
+        for item in tayangan
+    ]
+
+    paginator = Paginator(formatted_tayangan, 10)  # 10 items per page
+    page_obj = paginator.get_page(page_number)
+
+    # Get package information
+    paket = execute_query(f"""
+        SELECT CASE
+                   WHEN MAX(end_date_time) > CURRENT_DATE THEN 1
+                   ELSE 0
+               END AS is_valid
+        FROM TRANSACTION
+        WHERE username = '{request.COOKIES.get('username')}';
+    """)
+
+    context = {
+        'page_obj': page_obj,
+        'searchvalue': value,
+        'paket': paket[0] if paket else None
+    }
 
     return render(request, 'hasil_search.html', context)
-
 
 def add_tonton(request):
     # Cek apakah pengguna sudah login
