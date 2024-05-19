@@ -191,6 +191,7 @@ def episode(request, series_id, episode_number):
         episodes = cursor.fetchall()
         episodes_num = [(i, *episode) for i, episode in enumerate(episodes)]
 
+
         # Memilih episode berdasarkan episode_number
         if 0 <= episode_number < len(episodes):
             episode = episodes[episode_number]
@@ -201,7 +202,8 @@ def episode(request, series_id, episode_number):
                 'durasi': episode[3],
                 'url_video': episode[4],
                 'release_date': episode[5],
-            }
+                'is_released': episode[5] <= datetime.now().date(),}
+
         else:
             episode_details = None
 
@@ -374,32 +376,29 @@ def add_tonton(request):
 
 def unduh_tayangan(request, id_tayangan):
     username = request.COOKIES.get('username')
-
     if username:
-        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         with connection.cursor() as cursor:
             cursor.execute(f"""
-                    INSERT INTO TAYANGAN_TERUNDUH VALUES ('{id_tayangan}', '{username}', '{current_time}');
-                """)
+                   INSERT INTO TAYANGAN_TERUNDUH VALUES ('{id_tayangan}', '{username}', '{current_time}');
+                        """)
+                # Determine redirect URL based on type
+            return HttpResponseRedirect(f'/tayangan/film/{id_tayangan}')
+#         else:
+#                 return HttpResponseBadRequest('User not authenticated')
+
+def unduh_tayangan_series(request, id_tayangan):
+    username = request.COOKIES.get('username')
+    if username:
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+                   INSERT INTO TAYANGAN_TERUNDUH VALUES ('{id_tayangan}', '{username}', '{current_time}');
+                        """)
+                # Determine redirect URL based on type
             return HttpResponseRedirect(f'/tayangan/series/{id_tayangan}')
-
-    else:
-        return HttpResponseBadRequest('User not authenticated')
-
-# def insert_unduhan(request):
-#     username = request.COOKIES.get('username')
-#     id_tayangan = request.GET.get('id_tayangan')
-#     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#
-#     with connection.cursor() as cursor:
-#         cursor.execute(
-#             f'INSERT INTO TAYANGAN_TERUNDUH VALUES (\'{id_tayangan}\', \'{username}\', \'{timestamp}\')')
-#
-#     connection.commit()
-#     return JsonResponse({'status': 'success'})
-
-def go_to_unduhan(request):
-    return redirect('daftar_unduhan:daftar_unduhan')
+#         else:
+#             return HttpResponseBadRequest('User not authenticated')
 
 def tambah_ke_daftar_favorit(request, id_tayangan, judul):
     username = request.COOKIES.get('username')
@@ -415,8 +414,8 @@ def tambah_ke_daftar_favorit(request, id_tayangan, judul):
         cursor.execute(f"""INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT
                            VALUES ('{id_tayangan}', '{timestamp_output}', '{username}')
                        """)
-
-    return JsonResponse({'message': 'Successfully added to favorites'})
+            # Determine redirect URL based on type
+        return HttpResponseRedirect(f'/tayangan/film/{id_tayangan}')
 
 def daftar_favorit_series(request, id_series, judul):
         username = request.COOKIES.get('username')
@@ -433,12 +432,13 @@ def daftar_favorit_series(request, id_series, judul):
             with connection.cursor() as cursor:
                 cursor.execute(f"""INSERT INTO TAYANGAN_MEMILIKI_DAFTAR_FAVORIT VALUES ('{id_series}', '{timestamp_output}', '{username}')
                             """)
-            return JsonResponse({'message': 'Successfully added to favorites'})  # Or return any other response as needed
+
+            return HttpResponseRedirect(f'/tayangan/series/{id_tayangan}') # Or return any other response as needed
         else:
             return JsonResponse({'message': 'User not authenticated'}, status=401)
 
 def open_ulasan(request, tayangan_id):
-    return redirect('ulasan:hal_ulasan', id_tayangan=tayangan_id)
+    return redirect('ulasan:ulasan', id_tayangan=tayangan_id)
 
 def check_string_valid(string):
     new_string = ''

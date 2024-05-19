@@ -1,6 +1,16 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Title</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
+{% extends 'base.html' %}
 {% block content %}
+
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
@@ -48,12 +58,20 @@
     }
 
 </style>
-
 {% include 'navbar.html' %}
 <div class="container">
     <h1 class="mb-3">Halaman Series: {{ series_details.judul }}</h1>
+
     <div class="section">
-        <h2>Total View:</h2>
+        <a href="{% url 'tayangan:unduh_tayangan_series' series_details.id_tayangan %}">
+            <button type="button" class="btn btn-primary" id="btnUnduh" data-id="{{ series_details.id_tayangan }}">Unduh</button>
+        </a>
+        <button class="btn btn-primary mb-2" id="btnFavorit" data-bs-toggle="modal" data-bs-target="#favoriteListModal">Favorit Tayangan</button>
+        <a href="{% url 'ulasan:ulasan' series_details.id_tayangan %}" class="button">Ulasan</a>
+    </div>
+
+    <div class="section">
+        <h2>Total View: </h2>
         <h2>Rating Rata-Rata:</h2>
     </div>
     <div class="section">
@@ -91,57 +109,53 @@
         </ul>
     </div>
 
-    <div class="section">
-        <a href="{% url 'tayangan:unduh_tayangan' series_details.id_tayangan %}">
-            <button type="button" class="btn btn-primary" id="btnUnduh" data-id="{{ series_details.id_tayangan }}">Unduh</button>
-        </a>
-        <button class="btn btn-primary mb-2" id="btnFavorit" data-bs-toggle="modal" data-bs-target="#favoriteListModal">Favorit Tayangan</button>
-        <a href="{% url 'ulasan:ulasan' series_details.id_tayangan %}" class="button">Ulasan</a>
-    </div>
-</div>
 
-
-<div class="modal fade" id="favoriteListModal" tabindex="-1" aria-labelledby="favoriteListModalLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="favoriteListModalLabelTitle">TAMBAH KE DAFTAR FAVORIT MODAL</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <select class="form-select mb-3" id="dropdown-favorite">
-                    <option value="select-daftar-favorit">Judul Daftar Favorit: </option>
-                    {% for judul_daftar in list_daftar_favorit %}
-                    <option value="{{ judul_daftar }}">{{ judul_daftar }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <a id="link_add_favorite" href="">
-                    <button type="button" class="btn btn-primary" id="button_add_favorite" data-bs-dismiss="modal">Tambah</button>
-                </a>
+    <!-- Favorite Modal -->
+    <div class="modal fade" id="favoriteListModal" tabindex="-1" aria-labelledby="favoriteListModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="favoriteListModalLabelTitle">TAMBAH KE DAFTAR FAVORIT MODAL</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-select mb-3" id="dropdown-favorite">
+                        <option value="select-daftar-favorit">Judul Daftar Favorit: </option>
+                        {% for judul_daftar in list_daftar_favorit %}
+                        <option value="{{ judul_daftar }}">{{ judul_daftar }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <a id="link_add_favorite" href="">
+                        <button type="button" class="btn btn-primary" id="button_add_favorite" data-bs-dismiss="modal">Tambah</button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="downloadModalLabelTitle">SUKSES MENAMBAHKAN TAYANGAN KE DAFTAR UNDUHAN</h1>
-            </div>
-            <div class="modal-body" id="downloadModalBody">
-                <p></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary mb-2" id="btnDaftarUnduhan">Daftar Unduhan</button>
+    <!-- Download Modal -->
+    <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="downloadModalLabelTitle">SUKSES MENAMBAHKAN TAYANGAN KE DAFTAR UNDUHAN</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="downloadModalBody">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary mb-2" id="btnDaftarUnduhan">Daftar Unduhan</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -153,7 +167,7 @@
             event.preventDefault();  // Prevent default behavior to avoid navigation
             var idSeries = this.getAttribute('data-id');
             var title = document.getElementById("judul").innerHTML;  // Assuming there is an element with id 'judul'
-            var url = '{% url "tayangan:unduh_tayangan" "0" %}'.replace('0', idSeries);
+            var url = '{% url "tayangan:unduh_tayangan_series" "0" %}'.replace('0', idSeries);
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', url, true);
@@ -182,9 +196,6 @@
             xhr.send(JSON.stringify({}));
         });
 
-        document.getElementById('btnDaftarUnduhan').addEventListener('click', function() {
-            window.location.href = '{% url "daftar_unduhan:show_downloads" %}';
-        });
 
     document.getElementById('dropdown-favorite').addEventListener('click', function(e) {
             var selected_daftar = e.target.options[e.target.selectedIndex].value;
@@ -196,3 +207,5 @@
     });
 </script>
 {% endblock content %}
+
+

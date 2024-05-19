@@ -123,7 +123,6 @@
         <tr>
             <th>Judul</th>
             <th>Sinopsis</th>
-            <th>Trailer</th>
             <th>URL Trailer</th>
             <th>Tanggal Rilis</th>
             <th>Tayangan</th>
@@ -135,7 +134,6 @@
             <td>{{ film.judul }}</td>
             <td>{{ film.sinopsis_trailer }}</td>
             <td><a href="{{ film.url_video_trailer }}">Lihat trailer</a></td>
-            <td>{{ film.url_video_trailer }}</td>
             <td>{{ film.release_date_trailer }}</td>
             <td><a href="{% url 'tayangan:film' film.id %}">Lihat tayangan</a></td>
         </tr>
@@ -161,7 +159,6 @@
             <td>{{ series.judul }}</td>
             <td>{{ series.sinopsis_trailer }}</td>
             <td><a href="{{ series.url_video_trailer }}">Lihat trailer</a></td>
-            <td>{{ series.url_video_trailer }}</td>
             <td>{{ series.release_date_trailer }}</td>
             <td><a href="{% url 'tayangan:series' series.id %}">Lihat tayangan</a></td>
         </tr>

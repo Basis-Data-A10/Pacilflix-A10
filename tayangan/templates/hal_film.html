@@ -78,55 +78,80 @@
 <div class="container">
     <div class="section">
         <h1>{{ film_details.judul }}</h1>
-        <p>{{ film_details.sinopsis }}</p>
-        <p>Tanggal Rilis: {{ film_details.release_date_film }}</p>
-        <p>Genre:
+        <div class="section">
+            {% if film_details.is_released %}
+            <form id="tontonForm">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ film_details.id_tayangan }}">
+                <input type="hidden" name="tipe" value="film">
+                <label for="progress">Progress Tontonan (0-100):</label>
+                <input type="number" id="progress" name="progress" min="0" max="100" required>
+                <input type="hidden" name="durasi" value="{{ film_details.durasi_film }}">
+                <button class="button" type="button" onclick="submitTontonForm()">Tonton</button>
+            </form>
+            {% endif %}
+
+            <div class="section">
+                <a href="{% url 'tayangan:unduh_tayangan' film_details.id_tayangan %}">
+                    <button type="button" class="btn btn-primary" id="btnUnduh" data-id="{{ series_details.id_tayangan }}">Unduh</button>
+                </a>
+                <button class="btn btn-primary mb-2" id="btnFavorit" data-bs-toggle="modal" data-bs-target="#favoriteListModal">Favorit Tayangan</button>
+                <a href="{% url 'tayangan:insert_favorit' film_details.id_tayangan %}" class="button">Ulasan</a>
+            </div>
+
+            <p>{{ film_details.sinopsis }}</p>
+            <p>Tanggal Rilis: {{ film_details.release_date_film }}</p>
+            <p>Genre:
             {% for genre in film_details.genres %}
             {{ genre }}{% if not forloop.last %}, {% endif %}
             {% endfor %}
-        </p>
-        <p>Asal Negara: {{ film_details.asal_negara }}</p>
-        <p>Durasi: {{ film_details.durasi_film }} mins</p>
-        <p>Pemain:
+            </p>
+            <p>Asal Negara: {{ film_details.asal_negara }}</p>
+            <p>Durasi: {{ film_details.durasi_film }} mins</p>
+            <p>Pemain:
             {% for pemain in film_details.pemain %}
             {{ pemain }}{% if not forloop.last %}, {% endif %}
             {% endfor %}
-        </p>
-        <p>Penulis Skenario:
+            </p>
+            <p>Penulis Skenario:
             {% for penulis in film_details.penulis %}
             {{ penulis }}{% if not forloop.last %}, {% endif %}
             {% endfor %}
-        </p>
-        <p>Sutradara: {{ film_details.sutradara }}</p>
-    </div>
-    <div class="section">
-        {% if film_details.is_released %}
-        <form method="POST" action="{% url 'tayangan:add_tonton' %}">
-            {% csrf_token %}
-            <input type="hidden" name="id" value="{{ film_details.id_tayangan }}">
-            <input type="hidden" name="tipe" value="film">
-            <label for="progress">Progress Tontonan (0-100):</label>
-            <input type="number" id="progress" name="progress" min="0" max="100" required>
-            <input type="hidden" name="durasi" value="{{ film_details.durasi_film }}">
-            <button class="button" type="submit">Tonton</button>
-        </form>
-        {% endif %}
-
-        <form method="POST" action="{% url 'tayangan:unduh_tayangan' %}">
-            {% csrf_token %}
-            <input type="hidden" name="id_tayangan" value="{{ film_details.id_tayangan }}">
-            <button class="button" type="submit">Unduh Tayangan</button>
-        </form>
-
-        <form method="POST" action="{% url 'tayangan:insert_favorit' %}">
-            {% csrf_token %}
-            <input type="hidden" name="id_tayangan" value="{{ film_details.id_tayangan }}">
-            <button class="button" type="submit">Favorit Tayangan</button>
-        </form>
+            </p>
+            <p>Sutradara: {{ film_details.sutradara }}</p>
+        </div>
 
         <div class="film-reviews">
             <a href="{% url 'ulasan:ulasan' film_details.id_tayangan %}" class="button">Ulasan</a>
         </div>
     </div>
 </div>
+
+<script>
+    function submitTontonForm() {
+        const form = document.getElementById('tontonForm');
+        const formData = new FormData(form);
+
+        fetch("{% url 'tayangan:add_tonton' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Tontonan berhasil ditambahkan!');
+                    // Optionally, update the UI to reflect the changes
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('There was an error:', error);
+            });
+    }
+</script>
+
 {% endblock %}

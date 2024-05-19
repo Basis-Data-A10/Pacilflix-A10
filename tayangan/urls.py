@@ -11,10 +11,10 @@ urlpatterns = [
     path('series/<series_id>/', series, name='series'),
     path('', tayangan, name='tayangan'),
     path('unduh_tayangan/<str:id_tayangan>/', unduh_tayangan, name='unduh_tayangan'),
-    path('insert_favorit_film/', tambah_ke_daftar_favorit, name='insert_favorit'),
+    path('unduh_tayangan_series/<str:id_tayangan>/', unduh_tayangan_series, name='unduh_tayangan_series'),
+    path('insert_favorit_film/<str:id_tayangan>', tambah_ke_daftar_favorit, name='insert_favorit'),
     path('insert_favorit_series/<str:id_series>/<str:judul>/', daftar_favorit_series, name='insert_favorit_series'),
     path('add_tonton/', add_tonton, name='add_tonton'),
-    path('go_to_unduhan/', go_to_unduhan, name='go_to_unduhan'),
     path('ulasan/<tayangan_id>', open_ulasan, name='open_ulasan'),
     path('search/', show_hasil_pencarian_tayangan, name='hasil_search'),
 ]
