@@ -48,6 +48,10 @@ INSTALLED_APPS = [
     'daftar_unduhan',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://pacilflix-a10-production.up.railway.app'
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
